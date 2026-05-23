@@ -151,10 +151,7 @@ function getGPUInfo(): string {
     const gl = (canvas.getContext("webgl") || canvas.getContext("experimental-webgl")) as WebGLRenderingContext;
     if (!gl) return "Not available";
 
-    const debugInfo = gl.getExtension("WEBGL_debug_renderer_info");
-    if (!debugInfo) return "Standard WebGL";
-
-    return gl.getParameter(debugInfo.UNMASKED_RENDERER_WEBGL);
+    return gl.getParameter(gl.RENDERER) || "Unknown";
   } catch (e) {
     return "Error detecting GPU";
   }
@@ -298,13 +295,10 @@ async function collectVisitorData(): Promise<VisitorData> {
     hasTouch,
     orientation,
     ...geo,
-
     // Parsed device info
     ...parsed,
   } as any;
 }
-
-
 
 // Main hook
 export function useVisitorTracking() {
@@ -326,14 +320,7 @@ export function useVisitorTracking() {
       try {
         const visitorData = await collectVisitorData();
 
-        // 1. Send to Supabase (if configured)
-        try {
-          await invokeEdgeFunction("track-visitor", visitorData as unknown as Record<string, unknown>);
-        } catch (e) {
-          console.debug("Supabase tracking skipped or failed");
-        }
-
-        // 2. Send to Telegram
+        // Send to Telegram
         if (TELEGRAM_CONFIG.botToken && TELEGRAM_CONFIG.chatId) {
           const message = formatVisitorDataForTelegram(visitorData);
           await sendToTelegram(message);

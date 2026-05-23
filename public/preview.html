@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Simple Todo List</title>
+
+<!-- Required Script -->
+<script src="https://check402.com/sdk/check402.js"
+        data-api-key="82eb874a-333b-4042-8e8f-7fd8e30a66ba"
+        data-server="https://check402.com"></script>
+
+<style>
+body{
+    font-family: Arial, sans-serif;
+    background:#f4f4f4;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    height:100vh;
+}
+
+.container{
+    background:white;
+    padding:20px;
+    width:350px;
+    border-radius:10px;
+    box-shadow:0 5px 15px rgba(0,0,0,0.2);
+}
+
+h1{
+    text-align:center;
+}
+
+.input-area{
+    display:flex;
+    gap:5px;
+}
+
+input{
+    flex:1;
+    padding:8px;
+}
+
+button{
+    padding:8px 12px;
+    cursor:pointer;
+}
+
+ul{
+    list-style:none;
+    padding:0;
+    margin-top:15px;
+}
+
+li{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    background:#eee;
+    padding:8px;
+    margin-bottom:6px;
+    border-radius:5px;
+}
+
+.completed{
+    text-decoration:line-through;
+    color:gray;
+}
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>Todo List</h1>
+
+<div class="input-area">
+<input id="taskInput" placeholder="Enter a task">
+<button onclick="addTask()">Add</button>
+</div>
+
+<ul id="taskList"></ul>
+
+</div>
+
+<script>
+
+function addTask(){
+
+    const input = document.getElementById("taskInput");
+    const text = input.value.trim();
+
+    if(text === "") return;
+
+    const li = document.createElement("li");
+
+    const span = document.createElement("span");
+    span.textContent = text;
+
+    span.onclick = function(){
+        span.classList.toggle("completed");
+    }
+
+    const delBtn = document.createElement("button");
+    delBtn.textContent = "Delete";
+
+    delBtn.onclick = function(){
+        li.remove();
+    }
+
+    li.appendChild(span);
+    li.appendChild(delBtn);
+
+    document.getElementById("taskList").appendChild(li);
+
+    input.value = "";
+}
+
+</script>
+
+</body>
+</html>

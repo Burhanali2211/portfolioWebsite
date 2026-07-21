@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
-import { Mail, Github, Instagram, Heart } from "lucide-react";
+import { Mail, Github, Instagram, Heart, Linkedin, MessageCircle } from "lucide-react";
 import { personalInfo } from "@/data/personalInfo";
 
 const Footer = () => {
@@ -8,6 +8,8 @@ const Footer = () => {
 
   const socialLinks = [
     { icon: Mail, href: `mailto:${personalInfo.email}`, label: "Email" },
+    { icon: MessageCircle, href: `https://wa.me/${personalInfo.whatsapp}`, label: "WhatsApp" },
+    { icon: Linkedin, href: personalInfo.social.linkedin, label: "LinkedIn" },
     { icon: Github, href: personalInfo.social.github, label: "GitHub" },
     { icon: Instagram, href: personalInfo.social.instagram, label: "Instagram" },
   ];

@@ -5,9 +5,9 @@ import { useViewportDetection } from "@/hooks/useViewportDetection";
 import { EASING, DURATIONS, STAGGER } from "@/lib/animations";
 
 const stats = [
-  { value: 6, suffix: "+", label: "Projects Delivered" },
-  { value: 40, suffix: "%", label: "Avg. Performance Gain" },
-  { value: 5, suffix: "", label: "Industries Served" },
+  { value: 23, suffix: "+", label: "Projects Delivered" },
+  { value: 15, suffix: "+", label: "Clients Served" },
+  { value: 3, suffix: "+", label: "Years Experience" },
 ];
 
 const StatsBar = () => {

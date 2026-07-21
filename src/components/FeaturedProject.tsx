@@ -93,7 +93,7 @@ const FeaturedProject = ({ project }: FeaturedProjectProps) => {
 
           <div className="grid grid-cols-1 lg:grid-cols-12 lg:min-h-[400px] overflow-hidden">
             {/* Image Section */}
-            <div className="relative aspect-[16/9] lg:aspect-auto lg:col-span-7 overflow-hidden bg-muted border-b border-foreground md:border-b-2 lg:border-b-0 rounded-t-2xl lg:rounded-l-2xl lg:rounded-tr-none">
+            <div className="relative aspect-[16/9] lg:aspect-auto lg:col-span-7 overflow-hidden bg-[var(--accent-color)] border-b border-foreground md:border-b-2 lg:border-b-0 rounded-t-2xl lg:rounded-l-2xl lg:rounded-tr-none group-hover:bg-muted transition-colors duration-500">
               <motion.img
                 src={project.image}
                 alt={project.title}
@@ -101,9 +101,13 @@ const FeaturedProject = ({ project }: FeaturedProjectProps) => {
                 decoding="async"
                 style={{ scale: imageScale }}
                 transition={{ duration: 0.4, ease: "easeOut" }}
-                className="h-full w-full object-cover"
+                className="h-full w-full object-cover grayscale contrast-125 mix-blend-multiply opacity-80 transition-all duration-500 group-hover:grayscale-0 group-hover:mix-blend-normal group-hover:opacity-100 group-hover:contrast-100"
               />
-              <div className="absolute inset-0 bg-foreground/5 transition-opacity group-hover:opacity-0" />
+              {/* Halftone dot pattern overlay for extra brutalism */}
+              <div 
+                className="absolute inset-0 opacity-[0.15] mix-blend-overlay pointer-events-none transition-opacity duration-500 group-hover:opacity-0"
+                style={{ backgroundImage: 'radial-gradient(hsl(var(--foreground)) 1px, transparent 1px)', backgroundSize: '4px 4px' }}
+              />
 
               <div className="absolute left-4 top-4 z-10 md:left-6 md:top-6">
                 <div className="border border-foreground md:border-2 bg-accent px-3 py-1 text-[8px] font-black uppercase tracking-[0.2em] text-accent-foreground rounded-md shadow-[1.5px_1.5px_0px_0px_hsl(var(--foreground))] md:shadow-[3px_3px_0px_0px_hsl(var(--foreground))] md:text-[10px] md:px-4 md:py-1.5">

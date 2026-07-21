@@ -16,8 +16,13 @@ import {
 } from "@/components/ui/accordion";
 import { services, processSteps, faqs } from "@/data/services";
 import { personalInfo } from "@/data/personalInfo";
+import { useSEO } from "@/hooks/useSEO";
 
 const Services = () => {
+  useSEO({
+    title: "Services",
+    description: "Web apps, IoT solutions, APIs, and automation. Pricing from ₹10k. Burhan Ali — Kashmir-based developer. Book a free 30-min discovery call.",
+  });
   const containerRef = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({
     target: containerRef,
@@ -135,6 +140,96 @@ const Services = () => {
                 />
               ))}
             </div>
+          </div>
+        </section>
+
+        {/* Pricing Section */}
+        <section className="px-6 py-16 md:py-24">
+          <div className="mx-auto max-w-5xl">
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="mb-4 text-center"
+            >
+              <div className="mb-4 inline-block border-2 border-foreground bg-accent px-3 py-1 text-xs font-black uppercase tracking-widest text-accent-foreground shadow-[3px_3px_0px_0px_hsl(var(--foreground))]">
+                Transparent Pricing
+              </div>
+              <h2 className="text-2xl font-black uppercase tracking-tight text-foreground md:text-3xl">
+                Know Before You Ask
+              </h2>
+              <p className="mt-3 mx-auto max-w-xl text-muted-foreground text-sm">
+                Ranges reflect real project scope. Final quote after a 30-min discovery call — no surprises.
+              </p>
+            </motion.div>
+
+            <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+              {services.map((service, i) => (
+                <motion.div
+                  key={service.id}
+                  initial={{ opacity: 0, y: 30 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: i * 0.07 }}
+                  className="flex flex-col border-2 border-foreground bg-card p-5 shadow-[4px_4px_0px_0px_hsl(var(--foreground))]"
+                >
+                  <div className="mb-3 flex h-9 w-9 items-center justify-center border-2 border-foreground bg-accent shadow-[2px_2px_0px_0px_hsl(var(--foreground))]">
+                    <service.icon size={16} className="text-accent-foreground" strokeWidth={2.5} />
+                  </div>
+                  <h3 className="mb-1 text-sm font-black uppercase tracking-tight text-foreground leading-tight">
+                    {service.title}
+                  </h3>
+                  <p className="mb-4 flex-1 text-xs text-muted-foreground leading-relaxed">
+                    {service.shortDescription}
+                  </p>
+                  <div className="border-t-2 border-foreground pt-3">
+                    <p className="text-xs font-bold uppercase tracking-widest text-muted-foreground">Starting from</p>
+                    <p className="mt-0.5 text-lg font-black text-foreground">{service.priceRange}</p>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+
+            {/* What's always included */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.4 }}
+              className="mt-8 border-2 border-foreground bg-foreground px-6 py-5 shadow-[6px_6px_0px_0px_hsl(var(--accent))]"
+            >
+              <p className="mb-3 text-xs font-black uppercase tracking-widest text-background/60">Included on every project</p>
+              <div className="grid gap-2 sm:grid-cols-2 md:grid-cols-4">
+                {[
+                  "Full source code on delivery",
+                  "Written timeline & milestones",
+                  "50/50 payment split",
+                  "WhatsApp updates throughout",
+                ].map((item, i) => (
+                  <div key={i} className="flex items-start gap-2">
+                    <CheckCircle2 size={14} className="mt-0.5 flex-shrink-0 text-accent" strokeWidth={2.5} />
+                    <span className="text-sm font-medium text-background">{item}</span>
+                  </div>
+                ))}
+              </div>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.5 }}
+              className="mt-6 text-center"
+            >
+              <a
+                href={`https://wa.me/${personalInfo.whatsapp}?text=Hi%20Burhan,%20I%27d%20like%20to%20get%20a%20quote%20for%20my%20project.`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 border-2 border-foreground bg-background px-6 py-2.5 text-sm font-black uppercase tracking-wide shadow-[3px_3px_0px_0px_hsl(var(--foreground))] transition-all hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-[5px_5px_0px_0px_hsl(var(--accent))]"
+              >
+                Get a Free Quote on WhatsApp →
+              </a>
+            </motion.div>
           </div>
         </section>
 
@@ -258,10 +353,13 @@ const Services = () => {
 
               <div className="mt-8 flex flex-wrap justify-center gap-4">
                 <Button asChild size="lg">
-                  <Link to="/connect">
-                    Let's Talk
-                    <ArrowRight size={18} />
-                  </Link>
+                  <a
+                    href={`https://wa.me/${personalInfo.whatsapp}?text=Hi%20Burhan,%20I%27d%20like%20to%20discuss%20a%20project.`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    Book a Free Call →
+                  </a>
                 </Button>
                 <Button asChild variant="outline" size="lg">
                   <Link to="/work">See My Work</Link>

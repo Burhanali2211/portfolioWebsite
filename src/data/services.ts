@@ -16,15 +16,16 @@ export const services: Service[] = [
     id: "web-development",
     icon: Globe,
     title: "Web Application Development",
-    shortDescription: "Full-stack solutions that scale with your business",
-    fullDescription: "Custom web applications built with modern technologies. From simple landing pages to complex enterprise systems, I create solutions that are fast, secure, and user-friendly.",
+    shortDescription: "Full-stack React & Python apps that scale with your business",
+    fullDescription: "Custom web applications built with React, Next.js, and FastAPI/Django backends. From landing pages and e-commerce stores to complex ERP systems — deployed, documented, and handed over with source code.",
     benefits: [
-      "Responsive design for all devices",
-      "SEO-optimized architecture",
-      "Fast loading times",
-      "Secure authentication",
+      "Mobile-first, responsive on all devices",
+      "SEO-ready architecture from day one",
+      "Supabase or PostgreSQL real-time backends",
+      "AI/LLM feature integration on request",
     ],
-    technologies: ["React", "Next.js", "Django", "FastAPI", "PostgreSQL"],
+    technologies: ["React", "Next.js", "FastAPI", "Django", "Supabase", "PostgreSQL"],
+    priceRange: "₹25k – ₹2L+",
   },
   {
     id: "iot-solutions",
@@ -39,6 +40,7 @@ export const services: Service[] = [
       "Mobile app integration",
     ],
     technologies: ["Arduino", "ESP32", "Raspberry Pi", "MQTT", "Python"],
+    priceRange: "₹40k – ₹3L+",
   },
   {
     id: "api-development",
@@ -53,6 +55,7 @@ export const services: Service[] = [
       "Version management",
     ],
     technologies: ["FastAPI", "Django REST", "Node.js", "GraphQL"],
+    priceRange: "₹15k – ₹75k",
   },
   {
     id: "dashboards",
@@ -67,6 +70,7 @@ export const services: Service[] = [
       "Custom KPI tracking",
     ],
     technologies: ["React", "D3.js", "Recharts", "Python", "SQL"],
+    priceRange: "₹20k – ₹1L",
   },
   {
     id: "mobile-first",
@@ -81,6 +85,7 @@ export const services: Service[] = [
       "App-like experience",
     ],
     technologies: ["React", "PWA", "Service Workers", "Tailwind"],
+    priceRange: "₹20k – ₹75k",
   },
   {
     id: "automation",
@@ -95,6 +100,7 @@ export const services: Service[] = [
       "Integration with existing tools",
     ],
     technologies: ["Python", "Bash", "Cron", "APIs"],
+    priceRange: "₹10k – ₹50k",
   },
 ];
 
@@ -124,22 +130,26 @@ export const processSteps = [
 export const faqs = [
   {
     question: "How long does a typical project take?",
-    answer: "It depends on complexity. Simple websites take 1-2 weeks, while complex applications can take 1-3 months. I'll provide a timeline estimate after our initial discussion.",
+    answer: "A landing page or small website: 1–2 weeks. A web application with database and auth: 4–8 weeks. A full ERP or LMS platform: 2–4 months. You'll get a written timeline with milestones before any work begins — no surprises.",
+  },
+  {
+    question: "What are your payment terms?",
+    answer: "50% upfront, 50% on delivery. For larger projects (₹75k+), I split into 3 milestones: 40% start, 30% mid, 30% final. Payments via UPI, bank transfer, or Razorpay. No full payment upfront, ever.",
   },
   {
     question: "Do you offer ongoing maintenance?",
-    answer: "Yes! I offer maintenance packages for keeping your application updated, secure, and running smoothly. This includes bug fixes, security updates, and minor feature additions.",
+    answer: "Yes. Monthly retainer plans start at ₹5k/month covering bug fixes, security patches, and minor updates. For production applications, I strongly recommend at least a 3-month post-launch retainer.",
   },
   {
-    question: "What's your communication style during projects?",
-    answer: "I believe in regular updates. You'll receive weekly progress reports, and I'm available for calls when needed. I use clear documentation so you always know what's happening.",
+    question: "How do you communicate during a project?",
+    answer: "Primary: WhatsApp for quick updates and daily check-ins. Weekly: a written progress summary. Calls on request. You'll always know what's built, what's next, and what's blocked — no radio silence.",
   },
   {
     question: "Can you work with my existing codebase?",
-    answer: "Absolutely. I can audit, refactor, or extend existing projects. I'll assess the current state and recommend the best approach forward.",
+    answer: "Yes. I've extended and refactored codebases in React, Next.js, Django, and Node.js. I'll audit the code first, give you an honest assessment of its state, then quote accordingly. No hidden costs once work begins.",
   },
   {
     question: "Do you sign NDAs?",
-    answer: "Yes, I'm happy to sign NDAs before discussing sensitive project details. Your ideas and business information are safe with me.",
+    answer: "Yes, before any sensitive discussion. Send me a message on WhatsApp or email and I'll review and sign within 24 hours. Your idea, your IP.",
   },
 ];

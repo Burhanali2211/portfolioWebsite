@@ -13,8 +13,13 @@ import AvailabilityBadge from "@/components/AvailabilityBadge";
 import { Button } from "@/components/ui/button";
 import { personalInfo, experience, education } from "@/data/personalInfo";
 import { skills } from "@/data/skills";
+import { useSEO } from "@/hooks/useSEO";
 
 const About = () => {
+  useSEO({
+    title: "About",
+    description: "Burhan Ali — software developer and IoT architect from Kashmir with 3+ years experience building web apps, IoT systems, and APIs. 23+ projects delivered.",
+  });
   const containerRef = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({
     target: containerRef,
@@ -332,12 +337,18 @@ const About = () => {
                 Whether you have a project in mind or just want to chat about technology,
                 I'd love to hear from you.
               </p>
-              <div className="mt-8">
+              <div className="mt-8 flex flex-wrap justify-center gap-4">
                 <Button asChild size="lg">
-                  <Link to="/connect">
-                    Get in Touch
-                    <ArrowRight size={18} />
-                  </Link>
+                  <a
+                    href={`https://wa.me/${personalInfo.whatsapp}?text=Hi%20Burhan,%20I%27d%20like%20to%20discuss%20a%20project.`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    Book a Free Call →
+                  </a>
+                </Button>
+                <Button asChild variant="outline" size="lg">
+                  <Link to="/work">View Work</Link>
                 </Button>
               </div>
             </motion.div>

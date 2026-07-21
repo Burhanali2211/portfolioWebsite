@@ -124,3 +124,30 @@ ${data.message}
 🕒 <b>Sent at:</b> ${new Date().toLocaleString()}
     `.trim();
 }
+
+export function formatProjectBriefForTelegram(data: {
+    name: string;
+    email: string;
+    phone?: string;
+    projectType: string;
+    budget: string;
+    timeline: string;
+    description: string;
+}): string {
+    return `
+<b>🚀 New Project Brief!</b>
+
+👤 <b>Name:</b> ${data.name}
+📧 <b>Email:</b> ${data.email}
+${data.phone ? `📱 <b>Phone:</b> ${data.phone}` : ""}
+
+🏷 <b>Project Type:</b> ${data.projectType}
+💰 <b>Budget:</b> ${data.budget}
+⏱ <b>Timeline:</b> ${data.timeline}
+
+📋 <b>Description:</b>
+${data.description}
+
+🕒 <b>Sent at:</b> ${new Date().toLocaleString()}
+    `.trim();
+}

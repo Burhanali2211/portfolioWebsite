@@ -13,10 +13,15 @@ import {
   type ToolCategory,
 } from "@/data/openSourceTools";
 import { Download, Users, GitFork, Heart } from "lucide-react";
+import { useSEO } from "@/hooks/useSEO";
 
 const Footer = lazy(() => import("@/components/Footer"));
 
 const OpenSource = () => {
+  useSEO({
+    title: "Work",
+    description: "23+ projects by Burhan Ali — web applications, IoT systems, open source tools, and automation. Browse the full portfolio.",
+  });
   const [activeCategory, setActiveCategory] = useState<ToolCategory | "all">("all");
 
   const { count: downloadCount, startAnimation } = useCountUp({
@@ -50,14 +55,14 @@ const OpenSource = () => {
             >
               <h1 className="text-4xl font-black uppercase tracking-tight text-foreground md:text-5xl lg:text-6xl">
                 <CharacterReveal staggerAmount={0.015}>
-                  Open Source
+                  Work & Tools
                 </CharacterReveal>
               </h1>
-              <motion.div 
+              <motion.div
                 initial={{ scaleX: 0 }}
                 animate={{ scaleX: 1 }}
                 transition={{ delay: 0.4, duration: 0.5 }}
-                className="mx-auto mt-4 h-1 w-24 origin-center bg-foreground" 
+                className="mx-auto mt-4 h-1 w-24 origin-center bg-foreground"
               />
               <motion.p
                 initial={{ opacity: 0, y: 20 }}
@@ -65,7 +70,7 @@ const OpenSource = () => {
                 transition={{ delay: 0.5, duration: 0.5 }}
                 className="mx-auto mt-6 max-w-2xl text-lg text-muted-foreground"
               >
-                Free, open source projects built to solve real problems. Download, use, modify—everything you see here is yours.
+                Open source tools and client projects — all built to solve real problems. 40k+ total downloads. Everything MIT-licensed unless noted.
               </motion.p>
             </motion.div>
           </div>

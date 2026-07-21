@@ -6,19 +6,19 @@ import { BrowserRouter } from "react-router-dom";
 import SmoothScrollProvider from "./components/SmoothScrollProvider";
 import ScrollProgress from "./components/ScrollProgress";
 import AnimatedRoutes from "./components/AnimatedRoutes";
+import WhatsAppButton from "./components/WhatsAppButton";
 import { useVisitorTracking } from "./hooks/useVisitorTracking";
 
 const queryClient = new QueryClient();
 
-// Wrapper component to use hooks
 const AppContent = () => {
-  // Track visitor on app load
   useVisitorTracking();
 
   return (
     <>
       <ScrollProgress />
       <AnimatedRoutes />
+      <WhatsAppButton />
     </>
   );
 };

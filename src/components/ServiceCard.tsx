@@ -72,6 +72,16 @@ const ServiceCard = ({ service, index, size = "medium" }: ServiceCardProps) => {
           )}
         </div>
 
+        {/* Price range */}
+        {service.priceRange && (
+          <div className="mt-4 border-t border-foreground/10 pt-3">
+            <span className="text-xs font-black uppercase tracking-wide text-muted-foreground">
+              Starts from{" "}
+            </span>
+            <span className="text-sm font-black text-foreground">{service.priceRange}</span>
+          </div>
+        )}
+
         {/* Hover CTA */}
         <motion.div
           initial={{ opacity: 0, x: -10 }}

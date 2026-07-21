@@ -39,15 +39,22 @@ export const skills: Skill[] = [
   
   // Database
   { name: "PostgreSQL", proficiency: 80, category: "Database", icon: Database },
+  { name: "Supabase", proficiency: 85, category: "Database", icon: Database },
   { name: "MongoDB", proficiency: 75, category: "Database", icon: Database },
   { name: "MySQL", proficiency: 80, category: "Database", icon: Database },
   { name: "Redis", proficiency: 65, category: "Database", icon: Database },
-  
+
   // DevOps & Cloud
   { name: "Git & GitHub", proficiency: 90, category: "DevOps", icon: Cloud },
   { name: "Docker", proficiency: 70, category: "DevOps", icon: Cloud },
   { name: "Linux", proficiency: 80, category: "DevOps", icon: Terminal },
   { name: "REST APIs", proficiency: 90, category: "DevOps", icon: Plug },
+  { name: "Tauri (Rust)", proficiency: 65, category: "DevOps", icon: Layers },
+
+  // AI & Integrations
+  { name: "OpenAI API", proficiency: 75, category: "AI", icon: Smartphone },
+  { name: "Telegram Bot API", proficiency: 85, category: "AI", icon: Plug },
+  { name: "WhatsApp Business API", proficiency: 70, category: "AI", icon: Plug },
 ];
 
 export const skillCategories = [

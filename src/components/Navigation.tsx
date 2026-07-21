@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
-import { Menu, Mail, Github, Instagram } from "lucide-react";
+import { Menu, Mail, Github, Instagram, Phone } from "lucide-react";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { personalInfo } from "@/data/personalInfo";
 
@@ -13,10 +13,9 @@ const Navigation = () => {
   const links = [
     { to: "/", label: "Home" },
     { to: "/about", label: "About" },
-    { to: "/work", label: "Open Source" },
+    { to: "/work", label: "Work" },
     { to: "/services", label: "Services" },
-    { to: "/resume", label: "Resume" },
-    { to: "/connect", label: "Connect" },
+    { to: "/connect", label: "Contact" },
   ];
 
   const isActive = (path: string) => {
@@ -46,12 +45,12 @@ const Navigation = () => {
               whileHover={{ rotate: 5, x: -1, y: -1 }}
               transition={{ type: "spring", stiffness: 300 }}
             >
-              <span className="text-sm font-black text-accent-foreground">P</span>
+              <span className="text-sm font-black text-accent-foreground">BA</span>
             </motion.div>
 
             {/* Text */}
             <span className="text-lg font-black uppercase tracking-tight text-foreground">
-              ortfolio
+              Burhan Ali
             </span>
           </motion.div>
         </Link>
@@ -72,6 +71,16 @@ const Navigation = () => {
               {link.label}
             </Link>
           ))}
+          <motion.a
+            href={`https://wa.me/${personalInfo.whatsapp}?text=Hi%20Burhan,%20I'd%20like%20to%20discuss%20a%20project.`}
+            target="_blank"
+            rel="noopener noreferrer"
+            whileHover={{ x: -2, y: -2 }}
+            whileTap={{ x: 0, y: 0 }}
+            className="ml-2 flex items-center gap-2 border-2 border-foreground bg-accent px-4 py-2 text-sm font-black uppercase tracking-wide text-accent-foreground shadow-[3px_3px_0px_0px_hsl(var(--foreground))] transition-all hover:shadow-[5px_5px_0px_0px_hsl(var(--foreground))]"
+          >
+            Book a Call →
+          </motion.a>
         </div>
 
         {/* Mobile Menu */}
@@ -121,6 +130,7 @@ const Navigation = () => {
               <div className="flex items-center justify-center gap-3">
                 {[
                   { icon: Mail, href: `mailto:${personalInfo.email}`, label: "Email" },
+                  { icon: Phone, href: `https://wa.me/${personalInfo.whatsapp}`, label: "WhatsApp" },
                   { icon: Github, href: personalInfo.social.github, label: "GitHub" },
                   { icon: Instagram, href: personalInfo.social.instagram, label: "Instagram" },
                 ].map((social, i) => (

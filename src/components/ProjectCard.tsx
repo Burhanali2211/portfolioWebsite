@@ -71,33 +71,31 @@ const ProjectCard = ({ project, index = 0 }: ProjectCardProps) => {
           style={{
             rotateX,
             rotateY,
-            // @ts-ignore
-            "--accent-color": project.accentColor || "hsl(var(--accent))",
             willChange: "transform",
           }}
           whileHover={{
             x: -2,
             y: -2,
-            boxShadow: "6px 6px 0px 0px var(--accent-color)",
+            boxShadow: "6px 6px 0px 0px hsl(var(--accent))",
             transition: { type: "spring", stiffness: 600, damping: 25 }
           }}
           className="relative flex flex-col h-full overflow-hidden border border-foreground md:border-2 bg-card rounded-xl shadow-[2px_2px_0px_0px_hsl(var(--foreground))] md:shadow-[4px_4px_0px_0px_hsl(var(--foreground))]"
         >
-          {/* Shorter Image Aspect Ratio */}
-          <div className="relative aspect-[2/1] w-full overflow-hidden border-b border-foreground md:border-b-2 bg-muted rounded-t-xl">
-            <motion.img
-              src={project.image}
-              alt={project.title}
-              loading="lazy"
-              decoding="async"
-              whileHover={{ scale: 1.05 }}
-              transition={{ duration: 0.2, ease: "easeOut" }}
-              className="h-full w-full object-cover"
+          {/* Typography Block Replacing Image */}
+          <div className="relative flex items-center justify-center aspect-[2/1] w-full overflow-hidden border-b border-foreground md:border-b-2 bg-foreground text-background transition-colors duration-500 group-hover:bg-accent group-hover:text-accent-foreground rounded-t-xl">
+            <span className="text-[clamp(4rem,10vw,8rem)] font-black uppercase leading-none tracking-tighter opacity-90 transition-transform duration-500 group-hover:scale-110">
+              0{index + 1}
+            </span>
+            
+            {/* Halftone dot pattern overlay for extra brutalism */}
+            <div 
+              className="absolute inset-0 opacity-[0.15] mix-blend-overlay pointer-events-none"
+              style={{ backgroundImage: 'radial-gradient(currentColor 1px, transparent 1px)', backgroundSize: '4px 4px' }}
             />
 
             {/* Action Badge - Visible on all screens */}
             <div className="absolute right-0 top-0 overflow-hidden">
-              <div className="flex h-9 w-9 items-center justify-center border-b border-foreground md:border-b-2 border-l border-foreground md:border-l-2 bg-background text-foreground transition-all duration-200 group-hover:bg-accent group-hover:text-accent-foreground md:h-12 md:w-12">
+              <div className="flex h-9 w-9 items-center justify-center border-b border-background/20 md:border-b-2 border-l border-background/20 md:border-l-2 bg-background/10 backdrop-blur-sm text-background transition-all duration-200 group-hover:bg-background group-hover:text-foreground md:h-12 md:w-12">
                 <ArrowUpRight size={16} strokeWidth={3} className="transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 md:size-[22px]" />
               </div>
             </div>

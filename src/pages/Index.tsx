@@ -1,20 +1,19 @@
 import { Link } from "react-router-dom";
-import { motion, useTransform } from "framer-motion";
+import { motion } from "framer-motion";
 import { lazy, Suspense } from "react";
 import Navigation from "@/components/Navigation";
+import { useSEO } from "@/hooks/useSEO";
 import HeroSection from "@/components/HeroSection";
 import StatsBar from "@/components/StatsBar";
-import FeaturedProject from "@/components/FeaturedProject";
+import SocialProofBar from "@/components/SocialProofBar";
 import ProjectCard from "@/components/ProjectCard";
 import MagneticButton from "@/components/MagneticButton";
 import TextRevealMask from "@/components/TextRevealMask";
 import TextReveal from "@/components/TextReveal";
 import ScrollReveal from "@/components/ScrollReveal";
-import { useScrollSync } from "@/hooks/useScrollSync";
 import { projects } from "@/data/projects";
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
-import { cn } from "@/lib/utils";
 
 // Lazy load heavy below-the-fold components
 const BentoSkillGrid = lazy(() => import("@/components/BentoSkillGrid"));
@@ -27,8 +26,11 @@ const Footer = lazy(() => import("@/components/Footer"));
 const SectionLoader = () => <div className="w-full h-64 flex items-center justify-center bg-muted/20 animate-pulse" />;
 
 const Index = () => {
-  const featuredProject = projects[0];
-  const gridProjects = projects.slice(1, 6); // Slice 5 projects for the 2-1-2 rhythm
+  useSEO({
+    title: "Burhan Ali",
+    description: "Burhan Ali builds web applications, IoT systems, and APIs. 23+ projects delivered, 15+ clients. Based in Kashmir. Book a free call.",
+  });
+  const gridProjects = projects.slice(0, 6); // Take first 6 projects for a 3-column grid
 
   return (
     <div className="min-h-screen overflow-x-hidden">
@@ -36,6 +38,7 @@ const Index = () => {
       <main>
         <HeroSection />
         <StatsBar />
+        <SocialProofBar />
 
         {/* Featured Work Section */}
         <section className="px-5 py-12 md:px-6 md:py-32 lg:py-40">
@@ -64,27 +67,13 @@ const Index = () => {
               </div>
             </header>
 
-            {/* Structured Neo-Brutalist Layout */}
-            <div className="flex flex-col gap-12 md:gap-20 lg:gap-24">
-              {/* Featured Item */}
-              <div className="w-full">
-                <FeaturedProject project={featuredProject} />
-              </div>
-
-              {/* Project Grid - 1 Col on Mobile, 2-1-2 Rhythm on Tablet/Desktop */}
-              <div className="grid grid-cols-1 gap-6 md:grid-cols-2 md:gap-8 lg:grid-cols-3 lg:gap-10">
-                {gridProjects.map((project, i) => (
-                  <div
-                    key={project.id}
-                    className={cn(
-                      i === 2 ? "md:col-span-2 lg:col-span-1" : "col-span-1", // Index 2 is the middle "one in a row" on tablet
-                      "col-span-1"
-                    )}
-                  >
-                    <ProjectCard project={project} index={i} />
-                  </div>
-                ))}
-              </div>
+            {/* Structured Neo-Brutalist Uniform Grid */}
+            <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3 lg:gap-8">
+              {gridProjects.map((project, i) => (
+                <div key={project.id} className="col-span-1 h-full">
+                  <ProjectCard project={project} index={i} />
+                </div>
+              ))}
             </div>
 
             {/* Call to Action for Work */}
@@ -152,12 +141,12 @@ const CTASection = () => {
         >
           Let's create something that actually works. No fluff, just impact.
         </TextReveal>
-        <ScrollReveal variant="scale" delay={0.6} className="mt-8">
+        <ScrollReveal variant="scale" delay={0.6} className="mt-8 flex flex-wrap justify-center gap-4">
           <MagneticButton
             to="/connect"
             className="rounded-md border-2 border-background bg-accent px-12 font-black uppercase tracking-wide text-accent-foreground shadow-[6px_6px_0px_0px_hsl(var(--background))] transition-all hover:translate-x-[-3px] hover:translate-y-[-3px] hover:shadow-[9px_9px_0px_0px_hsl(var(--background))]"
           >
-            Let's Talk
+            Book a Free Call →
           </MagneticButton>
         </ScrollReveal>
       </div>

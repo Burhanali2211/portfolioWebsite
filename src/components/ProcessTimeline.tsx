@@ -1,7 +1,8 @@
 import { motion, useTransform } from "framer-motion";
-import { Search, Hammer, Rocket } from "lucide-react";
+import { Search, Hammer, Rocket, ArrowRight } from "lucide-react";
 import { useScrollSync } from "@/hooks/useScrollSync";
 import ScrollReveal from "@/components/ScrollReveal";
+import { personalInfo } from "@/data/personalInfo";
 
 const steps = [
   {
@@ -61,6 +62,24 @@ const ProcessTimeline = () => {
             </ScrollReveal>
           ))}
         </div>
+
+        {/* CTA after steps */}
+        <ScrollReveal variant="fade-up" delay={0.4} className="mt-16 text-center">
+          <p className="mb-6 text-muted-foreground">
+            Ready to kick off? Book a free 30-min discovery call — no commitment.
+          </p>
+          <motion.a
+            href={`https://wa.me/${personalInfo.whatsapp}?text=Hi%20Burhan,%20I%27d%20like%20to%20book%20a%20discovery%20call.`}
+            target="_blank"
+            rel="noopener noreferrer"
+            whileHover={{ x: -3, y: -3 }}
+            whileTap={{ scale: 0.97 }}
+            className="inline-flex items-center gap-2 border-2 border-foreground bg-accent px-8 py-4 font-black uppercase tracking-wide text-accent-foreground shadow-[4px_4px_0px_0px_hsl(var(--foreground))] transition-all hover:shadow-[6px_6px_0px_0px_hsl(var(--foreground))]"
+          >
+            Book the Discovery Call
+            <ArrowRight size={18} />
+          </motion.a>
+        </ScrollReveal>
       </div>
     </section>
   );

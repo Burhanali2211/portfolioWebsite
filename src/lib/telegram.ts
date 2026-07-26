@@ -66,13 +66,17 @@ export function formatVisitorDataForTelegram(data: any): string {
     const isp = clean(data.isp);
     const location = data.city && data.country ? `${data.city}, ${data.country}` : clean(data.ip) || "Unknown Location";
     const mapsLink = data.lat && data.lon ? `https://www.google.com/maps?q=${data.lat},${data.lon}` : null;
+    const utmStr = (data.utmSource || data.utmMedium || data.utmCampaign) 
+        ? `\n\n🎯 <b>Campaign Tracking:</b>\n• Source: ${data.utmSource || "N/A"}\n• Medium: ${data.utmMedium || "N/A"}\n• Campaign: ${data.utmCampaign || "N/A"}`
+        : "";
 
     return `
 <b>${data.isBot ? emoji.bot : "🚀"} New ${data.isBot ? "Bot" : "Visitor"} Detected!</b>
+<i>${data.isReturningVisitor ? `(Returning Visitor - Visit #${data.visitCount})` : "(First Time Visitor)"}</i>
 
 ${emoji.page} <b>Execution Info:</b>
 • URL: <code>${data.currentUrl}</code>
-• Referrer: <i>${data.referrer || "Direct Visit"}</i>
+• Referrer: <i>${data.referrer || "Direct Visit"}</i>${utmStr}
 
 ${emoji.location} <b>Identity & Location:</b>
 • City: <b>${data.city || "Unknown"}</b>

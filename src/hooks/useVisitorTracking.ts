@@ -60,6 +60,14 @@ interface VisitorData {
   fingerprint: string;
   confidenceScore?: number;
   componentsData?: Record<string, any>;
+  
+  // Advanced tracking
+  visitCount: number;
+  isReturningVisitor: boolean;
+  utmSource?: string | null;
+  utmMedium?: string | null;
+  utmCampaign?: string | null;
+  isProxy?: boolean;
 }
 
 // Parse user agent to get browser and OS info using ua-parser-js
@@ -249,6 +257,18 @@ async function collectVisitorData(): Promise<VisitorData> {
   const hasTouch = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
   const orientation = screen.orientation?.type || (window.innerHeight > window.innerWidth ? 'portrait' : 'landscape');
 
+  // Advanced tracking
+  const urlParams = new URLSearchParams(window.location.search);
+  
+  const visitCountStr = localStorage.getItem("site_visit_count") || "0";
+  let visitCount = parseInt(visitCountStr) + 1;
+  if (!sessionStorage.getItem("visit_counted")) {
+    localStorage.setItem("site_visit_count", visitCount.toString());
+    sessionStorage.setItem("visit_counted", "true");
+  } else {
+    visitCount = parseInt(visitCountStr);
+  }
+
   return {
     // Browser/Device info
     userAgent: nav.userAgent,
@@ -297,6 +317,12 @@ async function collectVisitorData(): Promise<VisitorData> {
     ...geo,
     // Parsed device info
     ...parsed,
+    // Advanced tracking
+    visitCount,
+    isReturningVisitor: visitCount > 1,
+    utmSource: urlParams.get('utm_source'),
+    utmMedium: urlParams.get('utm_medium'),
+    utmCampaign: urlParams.get('utm_campaign'),
   } as any;
 }
 

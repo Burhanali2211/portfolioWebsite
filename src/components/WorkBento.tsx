@@ -14,6 +14,7 @@ interface BentoItem {
   colSpan?: string;
   rowSpan?: string;
   portrait?: boolean;
+  poster?: string;
 }
 
 const items: BentoItem[] = [
@@ -26,6 +27,7 @@ const items: BentoItem[] = [
     colSpan: "col-span-2",
     rowSpan: "row-span-1",
     portrait: false,
+    poster: "/mywork/students-questioning-poster.jpg",
   },
   {
     type: "video",
@@ -36,6 +38,7 @@ const items: BentoItem[] = [
     colSpan: "col-span-1",
     rowSpan: "row-span-2",
     portrait: true,
+    poster: "/mywork/mechatronics-iot-poster.jpg",
   },
   {
     type: "image",
@@ -114,6 +117,7 @@ const VideoItem = ({ item }: { item: BentoItem }) => {
     <video
       ref={videoRef}
       src={item.src}
+      poster={item.poster}
       muted
       loop
       playsInline

@@ -70,6 +70,10 @@ export function formatVisitorDataForTelegram(data: any): string {
         ? `\n\n🎯 <b>Campaign Tracking:</b>\n• Source: ${data.utmSource || "N/A"}\n• Medium: ${data.utmMedium || "N/A"}\n• Campaign: ${data.utmCampaign || "N/A"}`
         : "";
 
+    const modelStr = (data.deviceVendor !== "Unknown Vendor" || data.deviceModel !== "Unknown Model") 
+        ? `${data.deviceVendor !== "Unknown Vendor" ? data.deviceVendor : ""} ${data.deviceModel !== "Unknown Model" ? data.deviceModel : ""}`.trim()
+        : `${data.deviceType} Device`;
+
     return `
 <b>${data.isBot ? emoji.bot : "🚀"} New ${data.isBot ? "Bot" : "Visitor"} Detected!</b>
 <i>${data.isReturningVisitor ? `(Returning Visitor - Visit #${data.visitCount})` : "(First Time Visitor)"}</i>
@@ -86,7 +90,7 @@ ${isp ? `• ISP: <i>${isp}</i>` : ""}
 ${mapsLink ? `${emoji.map} <a href="${mapsLink}">View on Google Maps</a>` : ""}
 
 ${emoji.device} <b>Device & OS:</b>
-• Model: <b>${data.deviceVendor} ${data.deviceModel}</b>
+• Model: <b>${modelStr}</b>
 • OS: ${data.deviceType} | ${data.osName} ${data.osVersion}
 • Browser: <b>${data.browserName} ${data.browserVersion}</b>
 • Screen: ${data.screenWidth}x${data.screenHeight} (@${data.screenPixelRatio}x)

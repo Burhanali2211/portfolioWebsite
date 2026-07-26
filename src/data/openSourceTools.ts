@@ -88,7 +88,7 @@ export const openSourceTools: OpenSourceTool[] = [
   },
   {
     id: "easyio-tech",
-    name: "EasyIo Tech",
+    name: "Easyio Technologies",
     tagline: "Simplifying Complex Technology",
     description: "A specialized platform accessible automation and scalable digital solutions. Bridges the gap for industries facing high technical barriers to entry in IoT and digital transformation.",
     category: "iot",

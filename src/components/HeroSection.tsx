@@ -6,7 +6,7 @@ import TextRevealMask from "./TextRevealMask";
 import TextReveal from "./TextReveal";
 import { EASING, DURATIONS } from "@/lib/animations";
 import { useRef } from "react";
-import { useSpring, useTransform, useMotionValue } from "framer-motion";
+import { useSpring, useTransform, useMotionValue, useScroll } from "framer-motion";
 import { personalInfo } from "@/data/personalInfo";
 
 const HeroSection = () => {
@@ -20,6 +20,9 @@ const HeroSection = () => {
 
   const rotateX = useTransform(springY, [-250, 250], [5, -5]);
   const rotateY = useTransform(springX, [-250, 250], [-5, 5]);
+
+  const { scrollY } = useScroll();
+  const imageFilter = useTransform(scrollY, [0, 200], ["grayscale(100%)", "grayscale(0%)"]);
 
   const handleMouseMove = (e: React.MouseEvent) => {
     if (!containerRef.current) return;
@@ -163,29 +166,7 @@ const HeroSection = () => {
               ))}
             </div>
 
-            {/* Quick Stats */}
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 1.1, duration: DURATIONS.fast }}
-              className="mt-10 flex flex-wrap gap-x-6 gap-y-4 border-t-2 border-foreground pt-6"
-            >
-              {[
-                { value: "23+", label: "Projects" },
-                { value: "4+", label: "Years Exp." },
-                { value: "15+", label: "Clients" },
-              ].map((stat, i) => (
-                <motion.div
-                  key={i}
-                  initial={{ opacity: 0, y: 15 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 1.15 + i * 0.1, duration: DURATIONS.fast, ease: EASING }}
-                >
-                  <div className="text-2xl font-black text-foreground md:text-3xl">{stat.value}</div>
-                  <div className="text-xs font-medium uppercase tracking-wide text-muted-foreground">{stat.label}</div>
-                </motion.div>
-              ))}
-            </motion.div>
+
           </div>
 
           {/* Right Side - Photo */}
@@ -228,8 +209,13 @@ const HeroSection = () => {
                     <motion.img
                       src="/hero.jpg"
                       alt={personalInfo.name}
-                      whileHover={{ scale: 1.05 }}
-                      className="h-full w-full object-cover transition-transform duration-700"
+                      style={{ filter: imageFilter, touchAction: "none" }}
+                      whileHover={{ scale: 1.05, filter: "grayscale(0%)" }}
+                      whileTap={{ scale: 1.05, filter: "grayscale(0%)" }}
+                      whileDrag={{ scale: 1.05, filter: "grayscale(0%)" }}
+                      drag
+                      dragConstraints={{ left: 0, right: 0, top: 0, bottom: 0 }}
+                      className="h-full w-full object-cover transition-transform duration-700 cursor-grab active:cursor-grabbing"
                       loading="eager"
                       decoding="async"
                     />

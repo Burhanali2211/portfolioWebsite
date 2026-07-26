@@ -25,6 +25,18 @@ export const projects: Project[] = [
     link: "https://technurturelms.in/"
   },
   {
+    id: "orulabs",
+    title: "OruLabs",
+    impactLine: "Real-Time Live Training Platform for Educators",
+    image: "/orulabs.png",
+    problem: "Educators relied on passive video lectures that failed to drive real engagement or measure student performance in real time.",
+    whatWasDone: "Built a live interactive training platform where educators deliver real-time classes with polling, widgets, analytics, and hybrid support — no downloads needed.",
+    outcome: "Replaced passive video tools with an active learning environment, giving educators instant performance data and students a reason to stay engaged.",
+    technicalDetails: "React, Real-time Infrastructure, Analytics, SaaS, EdTech.",
+    accentColor: "#6366f1",
+    link: "https://orulabs.in/"
+  },
+  {
     id: "oru-erp",
     title: "OruErp",
     impactLine: "Comprehensive ERP System for Agencies",
@@ -38,9 +50,9 @@ export const projects: Project[] = [
   },
   {
     id: "easyio-tech",
-    title: "EasyIo Tech",
+    title: "Easyio Technologies",
     impactLine: "Simplifying Complex Technology",
-    image: "https://images.unsplash.com/photo-1518770660439-4636190af475?q=80&w=2070&auto=format&fit=crop",
+    image: "/easyio.png",
     problem: "Industries face high barriers to entry when adopting IoT and digital transformation due to technical complexity and high integration costs.",
     whatWasDone: "Developed a specialized platform focusing on accessible automation and scalable digital solutions for small to medium enterprises.",
     outcome: "Successfully launched multiple IoT initiatives, making complex tech sustainable and accessible for early-stage adopters.",

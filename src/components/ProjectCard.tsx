@@ -4,13 +4,15 @@ import { Project } from "@/data/projects";
 import { ArrowUpRight } from "lucide-react";
 import { useViewportDetection } from "@/hooks/useViewportDetection";
 import { EASING, SPRING_CONFIGS } from "@/lib/animations";
+import { cn } from "@/lib/utils";
 
 interface ProjectCardProps {
   project: Project;
   index?: number;
+  compactOnMobile?: boolean;
 }
 
-const ProjectCard = ({ project, index = 0 }: ProjectCardProps) => {
+const ProjectCard = ({ project, index = 0, compactOnMobile = false }: ProjectCardProps) => {
   const { ref: cardRef, isVisible } = useViewportDetection<HTMLDivElement>({
     threshold: 0.1,
     triggerOnce: false,
@@ -19,8 +21,6 @@ const ProjectCard = ({ project, index = 0 }: ProjectCardProps) => {
   const x = useMotionValue(0);
   const y = useMotionValue(0);
 
-  // Faster, snappier spring for mouse following
-  // Ultra-snappier spring for instant mouse tracking
   const mouseX = useSpring(x, { stiffness: 600, damping: 30 });
   const mouseY = useSpring(y, { stiffness: 600, damping: 30 });
 
@@ -29,6 +29,13 @@ const ProjectCard = ({ project, index = 0 }: ProjectCardProps) => {
 
   const boundsRef = useRef<DOMRect | null>(null);
 
+  let hostname = "";
+  try {
+    hostname = new URL(project.link).hostname.replace("www.", "");
+  } catch {
+    hostname = project.link;
+  }
+
   function handleMouseEnter(e: React.MouseEvent<HTMLDivElement>) {
     boundsRef.current = e.currentTarget.getBoundingClientRect();
   }
@@ -36,10 +43,8 @@ const ProjectCard = ({ project, index = 0 }: ProjectCardProps) => {
   function handleMouseMove(e: React.MouseEvent<HTMLDivElement>) {
     if (!boundsRef.current) return;
     const rect = boundsRef.current;
-    const width = rect.width;
-    const height = rect.height;
-    const mouseXPos = e.clientX - rect.left - width / 2;
-    const mouseYPos = e.clientY - rect.top - height / 2;
+    const mouseXPos = e.clientX - rect.left - rect.width / 2;
+    const mouseYPos = e.clientY - rect.top - rect.height / 2;
     x.set(mouseXPos);
     y.set(mouseYPos);
   }
@@ -55,11 +60,7 @@ const ProjectCard = ({ project, index = 0 }: ProjectCardProps) => {
       ref={cardRef}
       initial={{ opacity: 0, y: 20 }}
       animate={isVisible ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-      transition={{
-        delay: index * 0.05,
-        duration: 0.5,
-        ease: EASING
-      }}
+      transition={{ delay: index * 0.05, duration: 0.5, ease: EASING }}
       className="group h-full"
       onMouseEnter={handleMouseEnter}
       onMouseMove={handleMouseMove}
@@ -68,61 +69,71 @@ const ProjectCard = ({ project, index = 0 }: ProjectCardProps) => {
     >
       <a href={project.link} target="_blank" rel="noopener noreferrer" className="block h-full cursor-pointer outline-none">
         <motion.article
-          style={{
-            rotateX,
-            rotateY,
-            willChange: "transform",
-          }}
-          whileHover={{
-            x: -2,
-            y: -2,
-            boxShadow: "6px 6px 0px 0px hsl(var(--accent))",
-            transition: { type: "spring", stiffness: 600, damping: 25 }
-          }}
-          className="relative flex flex-col h-full overflow-hidden border border-foreground md:border-2 bg-card rounded-xl shadow-[2px_2px_0px_0px_hsl(var(--foreground))] md:shadow-[4px_4px_0px_0px_hsl(var(--foreground))]"
+          style={{ rotateX, rotateY, willChange: "transform" }}
+          whileHover={{ y: -4, transition: { type: "spring", stiffness: 400, damping: 25 } }}
+          className="relative flex flex-col h-full rounded-2xl border border-border bg-card/60 backdrop-blur-sm shadow-sm transition-all duration-300 group-hover:border-foreground/30 group-hover:shadow-md overflow-hidden"
         >
-          {/* Typography Block Replacing Image */}
-          <div className="relative flex items-center justify-center aspect-[2/1] w-full overflow-hidden border-b border-foreground md:border-b-2 bg-foreground text-background transition-colors duration-500 group-hover:bg-accent group-hover:text-accent-foreground rounded-t-xl">
-            <span className="text-[clamp(4rem,10vw,8rem)] font-black uppercase leading-none tracking-tighter opacity-90 transition-transform duration-500 group-hover:scale-110">
-              0{index + 1}
-            </span>
-            
-            {/* Halftone dot pattern overlay for extra brutalism */}
-            <div 
-              className="absolute inset-0 opacity-[0.15] mix-blend-overlay pointer-events-none"
-              style={{ backgroundImage: 'radial-gradient(currentColor 1px, transparent 1px)', backgroundSize: '4px 4px' }}
-            />
-
-            {/* Action Badge - Visible on all screens */}
-            <div className="absolute right-0 top-0 overflow-hidden">
-              <div className="flex h-9 w-9 items-center justify-center border-b border-background/20 md:border-b-2 border-l border-background/20 md:border-l-2 bg-background/10 backdrop-blur-sm text-background transition-all duration-200 group-hover:bg-background group-hover:text-foreground md:h-12 md:w-12">
-                <ArrowUpRight size={16} strokeWidth={3} className="transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 md:size-[22px]" />
-              </div>
+          {/* Browser Frame */}
+          <div className="border-b border-border/60 flex-shrink-0">
+            <div className="flex items-center gap-1.5 px-3 py-2 bg-muted/50">
+              <span className="h-2 w-2 rounded-full bg-red-400/60" />
+              <span className="h-2 w-2 rounded-full bg-yellow-400/60" />
+              <span className="h-2 w-2 rounded-full bg-green-400/60" />
+              <span className="ml-2 flex-1 bg-background/60 rounded text-[9px] text-muted-foreground px-2 py-0.5 font-mono truncate border border-border/30">
+                {hostname}
+              </span>
+            </div>
+            <div
+              className={cn("relative overflow-hidden", compactOnMobile ? "h-24 sm:h-36" : "h-36")}
+              style={{ background: project.accentColor ? `${project.accentColor}20` : "hsl(var(--muted))" }}
+            >
+              {project.image && (
+                <img
+                  src={project.image}
+                  alt={project.title}
+                  className="w-full h-full object-cover object-top transition-transform duration-500 group-hover:scale-105"
+                  onError={(e) => { e.currentTarget.style.display = "none"; }}
+                />
+              )}
             </div>
           </div>
 
-          {/* Content Section - Simplified for Design Focus */}
-          <div className="flex flex-1 flex-col p-2.5 md:p-5 lg:p-6">
-            <h3 className="text-[clamp(0.8rem,4vw,1.3rem)] font-black uppercase leading-none tracking-tighter text-foreground group-hover:text-accent transition-colors">
-              {project.title}
-            </h3>
-
-            {/* Show description on mobile now that cards are larger */}
-            <p className="mt-3 flex-1 line-clamp-2 text-sm leading-relaxed text-muted-foreground">
-              {project.problem}
-            </p>
-
-            <div className="mt-4 flex items-center justify-between border-t border-foreground/10 pt-4 md:mt-6">
-              <div className="flex items-center gap-2 text-xs md:text-[clamp(0.6rem,2vw,0.75rem)] font-black uppercase tracking-widest text-foreground bg-accent/10 px-3 py-1.5 rounded-sm md:bg-transparent md:px-0 md:py-0">
-                <span>View Case Study</span>
-                <div className="hidden md:block h-[1.5px] w-4 bg-foreground transition-all duration-300 group-hover:w-8 group-hover:bg-accent" />
+          {/* Content */}
+          <div className={cn("flex flex-col flex-1 justify-between", compactOnMobile ? "p-3 sm:p-5 md:p-6" : "p-5 md:p-6")}>
+            <div className="flex items-center justify-between mb-3">
+              <span className="font-mono text-[10px] font-semibold tracking-widest text-muted-foreground uppercase opacity-70 group-hover:text-accent group-hover:opacity-100 transition-colors">
+                0{index + 1} // CASE
+              </span>
+              <div className="flex h-8 w-8 items-center justify-center rounded-full border border-border bg-background/80 text-foreground transition-all duration-300 group-hover:border-accent group-hover:bg-accent group-hover:text-accent-foreground group-hover:rotate-45">
+                <ArrowUpRight size={15} strokeWidth={2} />
               </div>
+            </div>
 
-              <div className="hidden sm:block">
-                <span className="text-[10px] font-bold text-muted-foreground uppercase opacity-60">
-                  0{index + 1}
-                </span>
-              </div>
+            <div className="flex-1">
+              <h3 className={cn("font-bold tracking-tight text-foreground group-hover:text-accent transition-colors duration-200", compactOnMobile ? "text-sm sm:text-base md:text-lg" : "text-base md:text-lg")}>
+                {project.title}
+              </h3>
+              <p className="mt-1 text-[10px] font-semibold tracking-wide uppercase text-accent/90">
+                {project.impactLine}
+              </p>
+              <p className={cn("mt-2 text-xs text-muted-foreground leading-relaxed", compactOnMobile ? "line-clamp-1 sm:line-clamp-2" : "line-clamp-2")}>
+                {project.problem}
+              </p>
+            </div>
+
+            <div className={cn("pt-3 border-t border-border/50 flex flex-wrap items-center justify-between gap-2", compactOnMobile ? "mt-2 sm:mt-3" : "mt-3")}>
+              {project.technicalDetails ? (
+                <div className="flex flex-wrap gap-1">
+                  {project.technicalDetails.split(",").slice(0, 2).map((tech) => (
+                    <span key={tech} className="text-[10px] font-medium text-muted-foreground bg-muted/60 px-2 py-0.5 rounded-full border border-border/40">
+                      {tech.trim()}
+                    </span>
+                  ))}
+                </div>
+              ) : null}
+              <span className="text-[10px] font-semibold tracking-wider uppercase text-foreground/80 group-hover:text-accent transition-colors ml-auto">
+                View →
+              </span>
             </div>
           </div>
         </motion.article>

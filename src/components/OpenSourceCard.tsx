@@ -47,14 +47,22 @@ const OpenSourceCard = ({ tool, index }: OpenSourceCardProps) => {
         )}
       </div>
 
-      {/* Image */}
-      <div className="relative aspect-[2/1] overflow-hidden border-b-2 border-foreground rounded-t-xl">
-        <img
-          src={tool.image}
-          alt={tool.name}
-          className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
-          loading="lazy"
-        />
+      {/* Image or Text Fallback */}
+      <div className="relative aspect-[2/1] overflow-hidden border-b-2 border-foreground rounded-t-xl bg-muted/20 flex flex-col items-center justify-center p-6 text-center">
+        {tool.image ? (
+          <img
+            src={tool.image}
+            alt={tool.name}
+            className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+            loading="lazy"
+          />
+        ) : (
+          <>
+            <Github size={32} className="text-muted-foreground/50 mb-3" />
+            <h4 className="font-mono text-sm font-bold text-foreground/80 break-words line-clamp-1 w-full">{tool.name}</h4>
+            <p className="text-[10px] font-mono text-muted-foreground/60 mt-1 uppercase tracking-widest">{tool.category}</p>
+          </>
+        )}
       </div>
 
       {/* Content */}

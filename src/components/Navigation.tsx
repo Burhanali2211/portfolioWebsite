@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
@@ -9,6 +9,24 @@ import { personalInfo } from "@/data/personalInfo";
 const Navigation = () => {
   const location = useLocation();
   const [isOpen, setIsOpen] = useState(false);
+  const [isVisible, setIsVisible] = useState(true);
+  const [lastScrollY, setLastScrollY] = useState(0);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const currentScrollY = window.scrollY;
+      // Hide if scrolling down past 50px, otherwise show
+      if (currentScrollY > lastScrollY && currentScrollY > 50) {
+        setIsVisible(false);
+      } else {
+        setIsVisible(true);
+      }
+      setLastScrollY(currentScrollY);
+    };
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [lastScrollY]);
 
   const links = [
     { to: "/", label: "Home" },
@@ -28,7 +46,12 @@ const Navigation = () => {
   };
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b-2 border-foreground bg-background">
+    <motion.header 
+      initial={{ y: 0 }}
+      animate={{ y: isVisible ? 0 : "-100%" }}
+      transition={{ duration: 0.3, ease: "easeInOut" }}
+      className="sticky top-0 z-[100] w-full border-b-2 border-foreground bg-background"
+    >
       <nav className="mx-auto flex h-14 max-w-6xl items-center justify-between px-6 md:h-16 md:px-8">
         {/* Animated Brand Logo */}
         <Link to="/">
@@ -155,7 +178,7 @@ const Navigation = () => {
           </SheetContent>
         </Sheet>
       </nav>
-    </header>
+    </motion.header>
   );
 };
 

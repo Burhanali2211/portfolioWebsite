@@ -78,7 +78,7 @@ const OpenSource = () => {
 
         {/* Tools Grid Section */}
         <section className="px-6 py-16 md:py-24">
-          <div className="mx-auto max-w-5xl">
+          <div className="mx-auto max-w-7xl">
             {/* Category Filter */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -93,8 +93,8 @@ const OpenSource = () => {
               />
             </motion.div>
 
-            {/* Tools Grid - 2 columns bento style like Work page */}
-            <div className="grid gap-6 md:grid-cols-2 md:gap-8">
+            {/* Tools Grid - 3 columns */}
+            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 md:gap-8">
               {filteredTools.map((tool, i) => (
                 <OpenSourceCard key={tool.id} tool={tool} index={i} />
               ))}

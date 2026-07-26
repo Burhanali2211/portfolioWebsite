@@ -1,10 +1,10 @@
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { useRef, useState } from "react";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import CharacterReveal from "@/components/CharacterReveal";
 import AvailabilityBadge from "@/components/AvailabilityBadge";
-import { Mail, MessageCircle, Calendar, ArrowRight, Send, CheckCircle } from "lucide-react";
+import { Mail, MessageCircle, Calendar, ArrowRight, Send, CheckCircle, ChevronRight, ChevronLeft } from "lucide-react";
 import { personalInfo } from "@/data/personalInfo";
 import { sendToTelegram, formatProjectBriefForTelegram } from "@/lib/telegram";
 import { Button } from "@/components/ui/button";
@@ -47,7 +47,10 @@ const Connect = () => {
     title: "Contact",
     description: "Book a free 30-min discovery call with Burhan Ali. WhatsApp, email, or project brief form. Replies within 24h.",
   });
+  
   const containerRef = useRef<HTMLDivElement>(null);
+  
+  const [step, setStep] = useState(1);
   const [formState, setFormState] = useState({
     name: "",
     email: "",
@@ -57,6 +60,7 @@ const Connect = () => {
     timeline: "",
     description: "",
   });
+  
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState("");
@@ -69,16 +73,39 @@ const Connect = () => {
     setFormState((prev) => ({ ...prev, [field]: value }));
   };
 
+  const nextStep = () => {
+    if (step === 1) {
+      if (!formState.name || !formState.email) {
+        setError("Name and Email are required.");
+        return;
+      }
+    } else if (step === 2) {
+      if (!formState.projectType) {
+        setError("Please select a project type.");
+        return;
+      }
+    }
+    setError("");
+    setStep((prev) => prev + 1);
+  };
+
+  const prevStep = () => {
+    setError("");
+    setStep((prev) => prev - 1);
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!formState.name || !formState.email || !formState.projectType || !formState.description) {
-      setError("Please fill in all required fields.");
+    if (!formState.description) {
+      setError("Please provide a project description.");
       return;
     }
     setError("");
     setSubmitting(true);
+    
     const message = formatProjectBriefForTelegram(formState);
     const ok = await sendToTelegram(message);
+    
     setSubmitting(false);
     if (ok) {
       setSubmitted(true);
@@ -86,6 +113,9 @@ const Connect = () => {
       setError("Something went wrong. Please try WhatsApp or email instead.");
     }
   };
+
+  // Input Soft Style
+  const inputStyle = "w-full rounded-xl border border-border/50 bg-muted/20 px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground shadow-sm outline-none focus:ring-2 focus:ring-foreground/20 focus:border-foreground/50 transition-all";
 
   return (
     <div className="min-h-screen">
@@ -185,13 +215,14 @@ const Connect = () => {
             className="mb-16 h-0.5 origin-left bg-foreground/20"
           />
 
-          {/* Project Brief Form */}
+          {/* Project Brief Form - Softened & Multi-step */}
           <motion.div
             initial={{ opacity: 0, y: 40 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.5, duration: DURATIONS.default, ease: EASING }}
+            className="max-w-3xl"
           >
-            <div className="mb-8">
+            <div className="mb-10">
               <div className="mb-3 inline-block border-2 border-foreground bg-foreground px-3 py-1 text-xs font-black uppercase tracking-widest text-background">
                 Or Send a Brief
               </div>
@@ -199,7 +230,7 @@ const Connect = () => {
                 Tell Me About Your Project
               </h2>
               <p className="mt-2 text-muted-foreground">
-                The more detail you share, the better I can respond with a real estimate.
+                Step-by-step to understand your exact needs.
               </p>
             </div>
 
@@ -207,20 +238,22 @@ const Connect = () => {
               <motion.div
                 initial={{ opacity: 0, scale: 0.95 }}
                 animate={{ opacity: 1, scale: 1 }}
-                className="border-2 border-foreground bg-accent p-10 text-center shadow-[6px_6px_0px_0px_hsl(var(--foreground))]"
+                className="rounded-2xl border border-border bg-accent/10 p-10 text-center shadow-lg backdrop-blur-sm"
               >
-                <CheckCircle size={40} className="mx-auto mb-4 text-accent-foreground" strokeWidth={2} />
-                <h3 className="text-xl font-black uppercase text-accent-foreground">Brief Received!</h3>
-                <p className="mt-2 text-accent-foreground/80">
-                  I'll review and reply to <strong>{formState.email}</strong> within 24 hours.
+                <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-full bg-accent text-accent-foreground mb-6">
+                  <CheckCircle size={40} strokeWidth={2} />
+                </div>
+                <h3 className="text-2xl font-black uppercase tracking-tight text-foreground">Brief Received!</h3>
+                <p className="mt-3 text-muted-foreground">
+                  I'll review and reply to <strong className="text-foreground">{formState.email}</strong> within 24 hours.
                 </p>
-                <p className="mt-4 text-sm text-accent-foreground/60">
+                <p className="mt-6 text-sm text-muted-foreground">
                   For faster response, message on{" "}
                   <a
                     href={`https://wa.me/${personalInfo.whatsapp}`}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="underline"
+                    className="font-bold underline text-foreground hover:text-accent transition-colors"
                   >
                     WhatsApp
                   </a>
@@ -228,158 +261,241 @@ const Connect = () => {
                 </p>
               </motion.div>
             ) : (
-              <form onSubmit={handleSubmit} className="space-y-6">
-                {/* Name + Email */}
-                <div className="grid gap-4 sm:grid-cols-2">
-                  <div>
-                    <label className="mb-1.5 block text-xs font-black uppercase tracking-wide text-foreground">
-                      Your Name <span className="text-accent">*</span>
-                    </label>
-                    <input
-                      name="name"
-                      value={formState.name}
-                      onChange={handleChange}
-                      placeholder="Acme Corp / Your Name"
-                      className="w-full border-2 border-foreground bg-background px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground shadow-[3px_3px_0px_0px_hsl(var(--foreground))] outline-none focus:shadow-[3px_3px_0px_0px_hsl(var(--accent))] transition-shadow"
-                    />
+              <div className="rounded-2xl border border-border/60 bg-card/40 p-6 md:p-10 shadow-sm backdrop-blur-md">
+                
+                {/* Goal Gradient Progress Bar */}
+                <div className="mb-8">
+                  <div className="flex justify-between text-[10px] font-bold uppercase tracking-widest text-muted-foreground mb-2">
+                    <span>Step {step} of 3</span>
+                    <span>{Math.round((step / 3) * 100)}% Completed</span>
                   </div>
-                  <div>
-                    <label className="mb-1.5 block text-xs font-black uppercase tracking-wide text-foreground">
-                      Email <span className="text-accent">*</span>
-                    </label>
-                    <input
-                      name="email"
-                      type="email"
-                      value={formState.email}
-                      onChange={handleChange}
-                      placeholder="you@company.com"
-                      className="w-full border-2 border-foreground bg-background px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground shadow-[3px_3px_0px_0px_hsl(var(--foreground))] outline-none focus:shadow-[3px_3px_0px_0px_hsl(var(--accent))] transition-shadow"
+                  <div className="h-1.5 w-full overflow-hidden rounded-full bg-muted">
+                    <motion.div
+                      className="h-full bg-foreground"
+                      initial={{ width: "33%" }}
+                      animate={{ width: `${(step / 3) * 100}%` }}
+                      transition={{ duration: 0.5, ease: "easeInOut" }}
                     />
                   </div>
                 </div>
 
-                {/* Phone */}
-                <div>
-                  <label className="mb-1.5 block text-xs font-black uppercase tracking-wide text-foreground">
-                    WhatsApp / Phone <span className="text-muted-foreground">(optional)</span>
-                  </label>
-                  <input
-                    name="phone"
-                    value={formState.phone}
-                    onChange={handleChange}
-                    placeholder="+91 98765 43210"
-                    className="w-full border-2 border-foreground bg-background px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground shadow-[3px_3px_0px_0px_hsl(var(--foreground))] outline-none focus:shadow-[3px_3px_0px_0px_hsl(var(--accent))] transition-shadow"
-                  />
-                </div>
-
-                {/* Project Type */}
-                <div>
-                  <label className="mb-2 block text-xs font-black uppercase tracking-wide text-foreground">
-                    Project Type <span className="text-accent">*</span>
-                  </label>
-                  <div className="flex flex-wrap gap-2">
-                    {projectTypes.map((type) => (
-                      <button
-                        key={type}
-                        type="button"
-                        onClick={() => handleSelect("projectType", type)}
-                        className={`border-2 px-4 py-2 text-xs font-black uppercase tracking-wide transition-all ${
-                          formState.projectType === type
-                            ? "border-foreground bg-accent text-accent-foreground shadow-[3px_3px_0px_0px_hsl(var(--foreground))]"
-                            : "border-foreground bg-background text-foreground hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-[2px_2px_0px_0px_hsl(var(--foreground))]"
-                        }`}
+                <form onSubmit={handleSubmit} className="relative min-h-[320px]">
+                  <AnimatePresence mode="wait">
+                    
+                    {/* STEP 1: IDENTITY */}
+                    {step === 1 && (
+                      <motion.div
+                        key="step1"
+                        initial={{ opacity: 0, x: 20 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        exit={{ opacity: 0, x: -20 }}
+                        transition={{ duration: 0.3 }}
+                        className="space-y-6"
                       >
-                        {type}
-                      </button>
-                    ))}
-                  </div>
-                </div>
+                        <div>
+                          <h3 className="text-lg font-bold tracking-tight mb-6">Let's start with the basics.</h3>
+                          <div className="grid gap-5 sm:grid-cols-2">
+                            <div>
+                              <label className="mb-2 block text-xs font-semibold uppercase tracking-wide text-foreground/80">
+                                Your Name <span className="text-red-500">*</span>
+                              </label>
+                              <input
+                                name="name"
+                                value={formState.name}
+                                onChange={handleChange}
+                                placeholder="Jane Doe"
+                                className={inputStyle}
+                              />
+                            </div>
+                            <div>
+                              <label className="mb-2 block text-xs font-semibold uppercase tracking-wide text-foreground/80">
+                                Email <span className="text-red-500">*</span>
+                              </label>
+                              <input
+                                name="email"
+                                type="email"
+                                value={formState.email}
+                                onChange={handleChange}
+                                placeholder="jane@example.com"
+                                className={inputStyle}
+                              />
+                            </div>
+                          </div>
+                        </div>
 
-                {/* Budget + Timeline */}
-                <div className="grid gap-6 sm:grid-cols-2">
-                  <div>
-                    <label className="mb-2 block text-xs font-black uppercase tracking-wide text-foreground">
-                      Budget Range
-                    </label>
-                    <div className="flex flex-wrap gap-2">
-                      {budgets.map((b) => (
-                        <button
-                          key={b}
-                          type="button"
-                          onClick={() => handleSelect("budget", b)}
-                          className={`border-2 px-3 py-1.5 text-xs font-bold uppercase tracking-wide transition-all ${
-                            formState.budget === b
-                              ? "border-foreground bg-accent text-accent-foreground shadow-[2px_2px_0px_0px_hsl(var(--foreground))]"
-                              : "border-foreground bg-background text-foreground hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-[2px_2px_0px_0px_hsl(var(--foreground))]"
-                          }`}
-                        >
-                          {b}
-                        </button>
-                      ))}
-                    </div>
-                  </div>
-                  <div>
-                    <label className="mb-2 block text-xs font-black uppercase tracking-wide text-foreground">
-                      Timeline
-                    </label>
-                    <div className="flex flex-wrap gap-2">
-                      {timelines.map((t) => (
-                        <button
-                          key={t}
-                          type="button"
-                          onClick={() => handleSelect("timeline", t)}
-                          className={`border-2 px-3 py-1.5 text-xs font-bold uppercase tracking-wide transition-all ${
-                            formState.timeline === t
-                              ? "border-foreground bg-accent text-accent-foreground shadow-[2px_2px_0px_0px_hsl(var(--foreground))]"
-                              : "border-foreground bg-background text-foreground hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-[2px_2px_0px_0px_hsl(var(--foreground))]"
-                          }`}
-                        >
-                          {t}
-                        </button>
-                      ))}
-                    </div>
-                  </div>
-                </div>
+                        <div>
+                          <label className="mb-2 block text-xs font-semibold uppercase tracking-wide text-foreground/80">
+                            WhatsApp / Phone <span className="text-muted-foreground font-normal normal-case">(optional)</span>
+                          </label>
+                          <input
+                            name="phone"
+                            value={formState.phone}
+                            onChange={handleChange}
+                            placeholder="+91 98765 43210"
+                            className={inputStyle}
+                          />
+                        </div>
+                      </motion.div>
+                    )}
 
-                {/* Description */}
-                <div>
-                  <label className="mb-1.5 block text-xs font-black uppercase tracking-wide text-foreground">
-                    Project Description <span className="text-accent">*</span>
-                  </label>
-                  <textarea
-                    name="description"
-                    value={formState.description}
-                    onChange={handleChange}
-                    rows={5}
-                    placeholder="Describe what you're building, what problem it solves, and who it's for..."
-                    className="w-full resize-none border-2 border-foreground bg-background px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground shadow-[3px_3px_0px_0px_hsl(var(--foreground))] outline-none focus:shadow-[3px_3px_0px_0px_hsl(var(--accent))] transition-shadow"
-                  />
-                </div>
+                    {/* STEP 2: SCOPE */}
+                    {step === 2 && (
+                      <motion.div
+                        key="step2"
+                        initial={{ opacity: 0, x: 20 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        exit={{ opacity: 0, x: -20 }}
+                        transition={{ duration: 0.3 }}
+                        className="space-y-8"
+                      >
+                        <div>
+                          <h3 className="text-lg font-bold tracking-tight mb-2">What kind of project is this?</h3>
+                          <label className="mb-4 block text-xs font-semibold uppercase tracking-wide text-foreground/80">
+                            Select one <span className="text-red-500">*</span>
+                          </label>
+                          <div className="flex flex-wrap gap-2.5">
+                            {projectTypes.map((type) => (
+                              <button
+                                key={type}
+                                type="button"
+                                onClick={() => handleSelect("projectType", type)}
+                                className={`rounded-full border px-4 py-2 text-xs font-bold transition-all ${
+                                  formState.projectType === type
+                                    ? "border-foreground bg-foreground text-background shadow-md"
+                                    : "border-border/60 bg-muted/30 text-foreground hover:bg-muted shadow-sm hover:shadow-md"
+                                }`}
+                              >
+                                {type}
+                              </button>
+                            ))}
+                          </div>
+                        </div>
 
-                {error && (
-                  <p className="text-sm font-bold text-red-500">{error}</p>
-                )}
+                        <div className="grid gap-8 sm:grid-cols-2">
+                          <div>
+                            <label className="mb-3 block text-xs font-semibold uppercase tracking-wide text-foreground/80">
+                              Estimated Budget
+                            </label>
+                            <div className="flex flex-wrap gap-2">
+                              {budgets.map((b) => (
+                                <button
+                                  key={b}
+                                  type="button"
+                                  onClick={() => handleSelect("budget", b)}
+                                  className={`rounded-lg border px-3 py-1.5 text-xs font-medium transition-all ${
+                                    formState.budget === b
+                                      ? "border-foreground bg-foreground text-background shadow-sm"
+                                      : "border-border/60 bg-muted/30 text-foreground hover:bg-muted"
+                                  }`}
+                                >
+                                  {b}
+                                </button>
+                              ))}
+                            </div>
+                          </div>
+                          <div>
+                            <label className="mb-3 block text-xs font-semibold uppercase tracking-wide text-foreground/80">
+                              Expected Timeline
+                            </label>
+                            <div className="flex flex-wrap gap-2">
+                              {timelines.map((t) => (
+                                <button
+                                  key={t}
+                                  type="button"
+                                  onClick={() => handleSelect("timeline", t)}
+                                  className={`rounded-lg border px-3 py-1.5 text-xs font-medium transition-all ${
+                                    formState.timeline === t
+                                      ? "border-foreground bg-foreground text-background shadow-sm"
+                                      : "border-border/60 bg-muted/30 text-foreground hover:bg-muted"
+                                  }`}
+                                >
+                                  {t}
+                                </button>
+                              ))}
+                            </div>
+                          </div>
+                        </div>
+                      </motion.div>
+                    )}
 
-                <Button
-                  type="submit"
-                  disabled={submitting}
-                  size="lg"
-                  className="w-full sm:w-auto"
-                >
-                  {submitting ? (
-                    "Sending..."
-                  ) : (
-                    <>
-                      <Send size={16} className="mr-2" />
-                      Send Project Brief
-                    </>
+                    {/* STEP 3: DETAILS */}
+                    {step === 3 && (
+                      <motion.div
+                        key="step3"
+                        initial={{ opacity: 0, x: 20 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        exit={{ opacity: 0, x: -20 }}
+                        transition={{ duration: 0.3 }}
+                        className="space-y-6"
+                      >
+                        <div>
+                          <h3 className="text-lg font-bold tracking-tight mb-2">Final step. Tell me the details.</h3>
+                          <label className="mb-4 block text-xs font-semibold uppercase tracking-wide text-foreground/80">
+                            Project Description <span className="text-red-500">*</span>
+                          </label>
+                          <textarea
+                            name="description"
+                            value={formState.description}
+                            onChange={handleChange}
+                            rows={6}
+                            placeholder="Describe what you're building, what problem it solves, and who it's for..."
+                            className={`${inputStyle} resize-none`}
+                          />
+                        </div>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+
+                  {error && (
+                    <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="mt-4 text-sm font-bold text-destructive">
+                      {error}
+                    </motion.p>
                   )}
-                </Button>
 
-                <p className="text-xs text-muted-foreground">
-                  I'll respond to qualified briefs within 24 hours with a rough estimate and next steps.
-                </p>
-              </form>
+                  {/* Navigation Buttons */}
+                  <div className="mt-10 flex items-center justify-between pt-6 border-t border-border/50">
+                    {step > 1 ? (
+                      <Button
+                        type="button"
+                        variant="ghost"
+                        onClick={prevStep}
+                        className="rounded-full px-5 text-muted-foreground hover:text-foreground"
+                      >
+                        <ChevronLeft size={16} className="mr-1.5" />
+                        Back
+                      </Button>
+                    ) : (
+                      <div /> // Spacer
+                    )}
+
+                    {step < 3 ? (
+                      <Button
+                        type="button"
+                        onClick={nextStep}
+                        className="rounded-full px-8 shadow-md"
+                      >
+                        Next Step
+                        <ChevronRight size={16} className="ml-1.5" />
+                      </Button>
+                    ) : (
+                      <Button
+                        type="submit"
+                        disabled={submitting}
+                        className="rounded-full px-8 shadow-md bg-accent text-accent-foreground hover:bg-accent/90"
+                      >
+                        {submitting ? (
+                          "Sending..."
+                        ) : (
+                          <>
+                            <Send size={16} className="mr-2" />
+                            Submit Brief
+                          </>
+                        )}
+                      </Button>
+                    )}
+                  </div>
+                </form>
+              </div>
             )}
           </motion.div>
         </div>

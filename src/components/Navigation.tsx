@@ -1,32 +1,26 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { motion } from "framer-motion";
+import { motion, useMotionValueEvent } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { Menu, Mail, Github, Instagram, Phone } from "lucide-react";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { personalInfo } from "@/data/personalInfo";
+import { useSmoothScroll } from "@/components/SmoothScrollProvider";
 
 const Navigation = () => {
   const location = useLocation();
   const [isOpen, setIsOpen] = useState(false);
   const [isVisible, setIsVisible] = useState(true);
-  const [lastScrollY, setLastScrollY] = useState(0);
+  const { scrollY, direction } = useSmoothScroll();
 
-  useEffect(() => {
-    const handleScroll = () => {
-      const currentScrollY = window.scrollY;
-      // Hide if scrolling down past 50px, otherwise show
-      if (currentScrollY > lastScrollY && currentScrollY > 50) {
-        setIsVisible(false);
-      } else {
-        setIsVisible(true);
-      }
-      setLastScrollY(currentScrollY);
-    };
-
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, [lastScrollY]);
+  useMotionValueEvent(scrollY, "change", (latest) => {
+    // Hide if scrolling down past 50px, otherwise show
+    if (latest > 50 && direction.get() === "down") {
+      setIsVisible(false);
+    } else {
+      setIsVisible(true);
+    }
+  });
 
   const links = [
     { to: "/", label: "Home" },

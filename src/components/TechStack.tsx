@@ -38,30 +38,33 @@ const TechStack = () => {
           </p>
         </ScrollReveal>
 
-        <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
-          {techCategories.map((category, i) => (
+        <div className="flex flex-wrap items-center justify-center gap-x-8 gap-y-6 md:gap-x-12 md:gap-y-8">
+          {[
+            { name: "React", icon: Layout },
+            { name: "Next.js", icon: Layout },
+            { name: "TypeScript", icon: Code2 },
+            { name: "Tailwind CSS", icon: Layout },
+            { name: "Node.js", icon: Server },
+            { name: "Python", icon: Code2 },
+            { name: "Supabase", icon: Database },
+            { name: "PostgreSQL", icon: Database },
+            { name: "Raspberry Pi", icon: Cpu },
+            { name: "Arduino", icon: Cpu },
+            { name: "Embedded Linux", icon: Server },
+            { name: "IoT / MQTT", icon: Cloud },
+            { name: "Git", icon: Code2 },
+            { name: "Docker", icon: Cloud },
+          ].map((tech, i) => (
             <motion.div
-              key={category.category}
-              initial={{ opacity: 0, y: 20 }}
+              key={tech.name}
+              initial={{ opacity: 0, y: 10 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ delay: i * 0.1 }}
-              className="flex flex-col"
+              transition={{ delay: i * 0.05 }}
+              className="flex items-center gap-2 text-foreground/80 hover:text-accent transition-colors"
             >
-              <div className="mb-4 flex items-center gap-3">
-                <category.icon size={20} className="text-accent" />
-                <h3 className="font-bold uppercase tracking-wide text-foreground">
-                  {category.category}
-                </h3>
-              </div>
-              <ul className="flex flex-col gap-2">
-                {category.skills.map((skill) => (
-                  <li key={skill} className="text-sm font-medium text-muted-foreground flex items-center gap-2">
-                    <span className="h-1 w-1 bg-foreground/30 rounded-full" />
-                    {skill}
-                  </li>
-                ))}
-              </ul>
+              <tech.icon size={20} strokeWidth={2} />
+              <span className="text-sm md:text-base font-bold uppercase tracking-widest">{tech.name}</span>
             </motion.div>
           ))}
         </div>

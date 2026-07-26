@@ -62,7 +62,7 @@ export const openSourceTools: OpenSourceTool[] = [
     featured: true,
     links: {
       github: "https://github.com/Burhanali2211/build",
-      demo: "http://dezignbuild.site/",
+      demo: "http://oruerp.com/",
     },
     features: [
       "Project & Sprint Management",
@@ -165,7 +165,7 @@ export const openSourceTools: OpenSourceTool[] = [
     lastUpdated: "2025-12-01",
     links: {
       github: "https://github.com/Burhanali2211/kalaam-reader",
-      demo: "https://followersof14.vercel.app/",
+      demo: "https://followersof14.online/",
     },
     features: [
       "Multi-lingual Search (Urdu, Arabic, Persian)",

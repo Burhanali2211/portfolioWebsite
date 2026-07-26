@@ -46,7 +46,7 @@ export const projects: Project[] = [
     outcome: "Digitally transformed agency logistics, enabling 100% visibility into project health and reducing administrative task-load by over 30%.",
     technicalDetails: "React, TypeScript, Vite, Tailwind CSS, TanStack Query, Supabase for real-time infrastructure.",
     accentColor: "#1e293b",
-    link: "http://dezignbuild.site/"
+    link: "http://oruerp.com/"
   },
   {
     id: "easyio-tech",
@@ -82,7 +82,7 @@ export const projects: Project[] = [
     outcome: "Centralized thousands of recitations in Urdu, Arabic, and Persian, serving a global community of dedicated followers.",
     technicalDetails: "React, Vercel, Multi-lingual Database, Cloudinary for Media.",
     accentColor: "#10B981",
-    link: "https://followersof14.vercel.app/"
+    link: "https://followersof14.online/"
   },
   {
     id: "developers-mindset",

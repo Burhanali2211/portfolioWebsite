@@ -1,315 +1,317 @@
 import { motion, AnimatePresence } from "framer-motion";
-import { useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
-import { CheckCircle2, ArrowRight, LayoutGrid, Users, Folder, BarChart3, Search, Bell, TrendingUp } from "lucide-react";
+import CharacterReveal from "@/components/CharacterReveal";
+import AvailabilityBadge from "@/components/AvailabilityBadge";
+import { personalInfo } from "@/data/personalInfo";
 import { sendToTelegram, formatProjectBriefForTelegram } from "@/lib/telegram";
+import { EASING, DURATIONS, STAGGER } from "@/lib/animations";
 import { useSEO } from "@/hooks/useSEO";
 
-const projectTypes = ["Web Application", "IoT System", "Mobile App", "Enterprise ERP"];
-const budgets = ["< ₹25k", "₹25k - ₹1L", "₹1L+"];
+const projectTypes = ["Web Application", "IoT / Embedded", "Mobile App", "E-commerce", "API / Backend", "Other"];
+const budgets = ["< ₹25,000", "₹25k – ₹75k", "₹75k – ₹2L", "₹2L+", "Let's discuss"];
+const timelines = ["ASAP (< 2 weeks)", "1 month", "2–3 months", "3+ months", "Flexible"];
+
+const questions = [
+  { id: "name", title: "WHAT IS YOUR NAME?", type: "text", placeholder: "Type your name..." },
+  { id: "email", title: "WHAT IS YOUR EMAIL?", type: "email", placeholder: "you@example.com" },
+  { id: "projectType", title: "WHAT KIND OF PROJECT IS IT?", type: "choice", options: projectTypes },
+  { id: "budget", title: "WHAT'S THE ROUGH BUDGET?", type: "choice", options: budgets },
+  { id: "timeline", title: "WHEN DO YOU NEED IT BY?", type: "choice", options: timelines },
+  { id: "description", title: "TELL ME THE DETAILS.", type: "textarea", placeholder: "Describe the problem you're trying to solve..." }
+];
 
 const Connect = () => {
   useSEO({
-    title: "Start a Project",
-    description: "Stop losing hours to scattered tools. Build your enterprise system with Burhan Ali.",
+    title: "Contact",
+    description: "Book a free 30-min discovery call with Burhan Ali. WhatsApp, email, or project brief form. Replies within 24h.",
   });
   
-  const [formState, setFormState] = useState({
+  const containerRef = useRef<HTMLDivElement>(null);
+  
+  const [currentStep, setCurrentStep] = useState(0);
+  const [formState, setFormState] = useState<Record<string, string>>({
     name: "",
     email: "",
-    projectType: "Enterprise ERP",
-    budget: "₹1L+",
+    phone: "",
+    projectType: "",
+    budget: "",
+    timeline: "",
+    description: "",
   });
   
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState("");
+  const inputRef = useRef<HTMLInputElement | HTMLTextAreaElement>(null);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+  // Auto-focus input when step changes
+  useEffect(() => {
+    if (inputRef.current) {
+      inputRef.current.focus();
+    }
+  }, [currentStep]);
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setFormState((prev) => ({ ...prev, [e.target.name]: e.target.value }));
     setError("");
   };
 
-  const handleSelect = (field: string, value: string) => {
-    setFormState((prev) => ({ ...prev, [field]: value }));
+  const handleNext = () => {
+    const q = questions[currentStep];
+    if (q.type === "text" || q.type === "email") {
+      if (!formState[q.id].trim()) {
+        setError("This field is required.");
+        return;
+      }
+      if (q.type === "email" && !/^\S+@\S+\.\S+$/.test(formState.email)) {
+        setError("Please enter a valid email address.");
+        return;
+      }
+    }
+    
     setError("");
+    if (currentStep < questions.length - 1) {
+      setCurrentStep((prev) => prev + 1);
+    } else {
+      submitForm();
+    }
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!formState.name || !formState.email) {
-      setError("Please fill in your name and email.");
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === "Enter" && questions[currentStep].type !== "textarea") {
+      e.preventDefault();
+      handleNext();
+    }
+  };
+
+  const handleChoice = (field: string, value: string) => {
+    setFormState((prev) => ({ ...prev, [field]: value }));
+    setError("");
+    setTimeout(() => {
+      handleNext();
+    }, 150); // slight delay for visual feedback
+  };
+
+  const submitForm = async () => {
+    if (!formState.description.trim()) {
+      setError("Please provide a project description.");
       return;
     }
     setError("");
     setSubmitting(true);
     
     const message = formatProjectBriefForTelegram({
-      ...formState,
-      description: "Fast-track brief submitted from SaaS onboarding flow.",
-      timeline: "Discuss on call",
-      phone: ""
+      name: formState.name,
+      email: formState.email,
+      phone: formState.phone,
+      projectType: formState.projectType,
+      budget: formState.budget,
+      timeline: formState.timeline,
+      description: formState.description
     });
+    
     const ok = await sendToTelegram(message);
     
     setSubmitting(false);
     if (ok) {
       setSubmitted(true);
     } else {
-      setError("Something went wrong. Please try again.");
+      setError("Something went wrong. Please try WhatsApp or email instead.");
     }
   };
 
-  const inputClass = "w-full rounded-xl border border-slate-200 bg-slate-50/50 px-4 py-3.5 text-sm text-slate-900 placeholder:text-slate-400 outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 focus:bg-white transition-all";
-  const labelClass = "mb-2 block text-xs font-bold text-slate-900";
+  const renderCurrentInput = () => {
+    const q = questions[currentStep];
+
+    if (q.type === "choice") {
+      return (
+        <div className="mt-6 md:mt-8 flex flex-col sm:flex-row sm:flex-wrap gap-3 md:gap-4">
+          {q.options?.map((opt) => (
+            <button
+              key={opt}
+              onClick={() => handleChoice(q.id, opt)}
+              className="w-full sm:w-auto border-2 border-foreground bg-background px-4 py-3 md:px-6 md:py-4 text-sm md:text-base font-black uppercase tracking-wide text-foreground shadow-[3px_3px_0px_0px_hsl(var(--foreground))] md:shadow-[4px_4px_0px_0px_hsl(var(--foreground))] outline-none transition-all hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-[5px_5px_0px_0px_hsl(var(--accent))] focus:bg-accent focus:text-accent-foreground text-left sm:text-center"
+            >
+              {opt}
+            </button>
+          ))}
+        </div>
+      );
+    }
+
+    if (q.type === "textarea") {
+      return (
+        <div className="mt-8 w-full max-w-3xl">
+          <textarea
+            ref={inputRef as any}
+            name={q.id}
+            value={formState[q.id]}
+            onChange={handleChange}
+            placeholder={q.placeholder}
+            rows={5}
+            className="w-full resize-none border-b-4 border-foreground bg-transparent py-3 md:py-4 text-lg sm:text-xl md:text-3xl font-bold tracking-tight text-foreground placeholder:text-muted-foreground outline-none transition-colors focus:border-accent rounded-none"
+          />
+          <div className="mt-6 md:mt-8">
+            <button
+              onClick={submitForm}
+              disabled={submitting}
+              className="w-full sm:w-auto border-2 border-foreground bg-accent px-6 py-3 md:px-8 md:py-4 text-base md:text-lg font-black uppercase tracking-wide text-accent-foreground shadow-[4px_4px_0px_0px_hsl(var(--foreground))] md:shadow-[6px_6px_0px_0px_hsl(var(--foreground))] transition-all hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-[6px_6px_0px_0px_hsl(var(--foreground))] md:hover:shadow-[8px_8px_0px_0px_hsl(var(--foreground))] disabled:opacity-50"
+            >
+              {submitting ? "SENDING..." : "SUBMIT BRIEF →"}
+            </button>
+          </div>
+        </div>
+      );
+    }
+
+    return (
+      <div className="mt-8 w-full max-w-2xl">
+        <input
+          ref={inputRef as any}
+          type={q.type}
+          name={q.id}
+          value={formState[q.id]}
+          onChange={handleChange}
+          onKeyDown={handleKeyDown}
+          placeholder={q.placeholder}
+          autoComplete="off"
+          className="w-full border-b-4 border-foreground bg-transparent py-3 md:py-4 text-xl sm:text-3xl md:text-5xl font-bold tracking-tight text-foreground placeholder:text-muted-foreground/50 outline-none transition-colors focus:border-accent rounded-none"
+        />
+        <div className="mt-6 md:mt-8 flex flex-wrap items-center gap-3 md:gap-4">
+          <button
+            onClick={handleNext}
+            className="border-2 border-foreground bg-foreground px-6 py-2.5 md:px-8 md:py-3 text-base md:text-lg font-black uppercase tracking-wide text-background shadow-[3px_3px_0px_0px_hsl(var(--accent))] md:shadow-[4px_4px_0px_0px_hsl(var(--accent))] transition-all hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-[5px_5px_0px_0px_hsl(var(--accent))] md:hover:shadow-[6px_6px_0px_0px_hsl(var(--accent))]"
+          >
+            OK →
+          </button>
+          <span className="text-xs md:text-sm font-bold uppercase tracking-widest text-muted-foreground">
+            press <strong className="text-foreground">Enter</strong>
+          </span>
+        </div>
+      </div>
+    );
+  };
 
   return (
-    <div className="min-h-screen flex flex-col bg-slate-50 font-sans selection:bg-blue-100 selection:text-blue-900">
+    <div className="min-h-screen flex flex-col">
       <Navigation />
       
-      <main className="flex-1 relative pb-20 pt-28 md:pt-36 z-10 overflow-hidden">
-        {/* Subtle Grid Background */}
-        <div className="absolute inset-0 -z-10 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:32px_32px]" />
+      <main ref={containerRef} className="flex-1 flex flex-col relative px-4 sm:px-6 py-20 md:py-32 overflow-hidden">
+        {/* Background grid */}
+        <div className="absolute inset-0 -z-10 opacity-[0.03] pointer-events-none">
+          <div
+            className="absolute inset-0"
+            style={{
+              backgroundImage: `
+                linear-gradient(to right, hsl(var(--foreground)) 1px, transparent 1px),
+                linear-gradient(to bottom, hsl(var(--foreground)) 1px, transparent 1px)
+              `,
+              backgroundSize: "60px 60px",
+            }}
+          />
+        </div>
 
-        <div className="mx-auto max-w-7xl px-5 lg:px-8">
-          <div className="grid grid-cols-1 gap-16 lg:grid-cols-2 lg:gap-24 items-center">
-            
-            {/* Left Column - The Form */}
-            <div className="w-full max-w-xl mx-auto lg:mx-0">
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5 }}
-              >
-                <h1 className="text-4xl md:text-5xl font-bold tracking-tight text-slate-900 leading-[1.1]">
-                  Stop losing 15+ hours/week to scattered tools
-                </h1>
-                <p className="mt-4 text-base md:text-lg text-slate-500 leading-relaxed">
-                  Without a unified system, your team leaks billable hours, misses deadlines, and loses clients silently. Let's fix that.
-                </p>
+        {/* WhatsApp Fast Track - Top Right */}
+        <div className="absolute top-24 md:top-32 right-6 md:right-12 z-10 hidden sm:block">
+          <a 
+            href={`https://wa.me/${personalInfo.whatsapp}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="group flex items-center gap-3 border-2 border-foreground bg-background p-3 shadow-[4px_4px_0px_0px_hsl(var(--foreground))] transition-all hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-[6px_6px_0px_0px_hsl(var(--accent))]"
+          >
+            <div className="bg-accent text-accent-foreground p-2">
+              <CharacterReveal staggerAmount={0} className="font-black text-sm">
+                FAST TRACK
+              </CharacterReveal>
+            </div>
+            <span className="font-bold uppercase tracking-wide text-sm mr-2 group-hover:text-accent transition-colors">
+              WhatsApp
+            </span>
+          </a>
+        </div>
 
-                <div className="mt-10 mb-4 flex items-center justify-between text-[10px] font-bold uppercase tracking-widest text-slate-500">
-                  <span>Setup Progress</span>
-                  <span className="text-blue-600">35%</span>
-                </div>
-                <div className="h-1.5 w-full rounded-full bg-slate-200 overflow-hidden">
-                  <motion.div 
-                    initial={{ width: 0 }}
-                    animate={{ width: "35%" }}
-                    transition={{ duration: 1, delay: 0.5 }}
-                    className="h-full rounded-full bg-blue-600"
+        <div className="mx-auto w-full max-w-5xl flex-1 flex flex-col justify-center">
+          {submitted ? (
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="border-4 border-foreground bg-accent p-12 text-center shadow-[12px_12px_0px_0px_hsl(var(--foreground))]"
+            >
+              <h3 className="text-4xl md:text-6xl font-black uppercase tracking-tighter text-accent-foreground">
+                BRIEF RECEIVED
+              </h3>
+              <p className="mt-6 text-xl font-medium text-accent-foreground/90">
+                I'll review and reply to <strong className="font-black">{formState.email}</strong> within 24 hours.
+              </p>
+              <div className="mt-12">
+                <a
+                  href="/"
+                  className="inline-block border-2 border-foreground bg-background px-8 py-4 text-lg font-black uppercase tracking-wide text-foreground shadow-[4px_4px_0px_0px_hsl(var(--foreground))] hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-[6px_6px_0px_0px_hsl(var(--foreground))] transition-all"
+                >
+                  RETURN HOME
+                </a>
+              </div>
+            </motion.div>
+          ) : (
+            <div className="w-full">
+              {/* Progress Indicator */}
+              <div className="mb-8 md:mb-12 flex flex-wrap items-center gap-1.5 md:gap-2">
+                {questions.map((_, i) => (
+                  <div 
+                    key={i} 
+                    className={`h-1.5 md:h-2 transition-all duration-500 ease-out ${
+                      i === currentStep 
+                        ? "w-12 md:w-16 bg-accent border-2 border-foreground shadow-[2px_2px_0px_0px_hsl(var(--foreground))]" 
+                        : i < currentStep 
+                          ? "w-6 md:w-8 bg-foreground" 
+                          : "w-6 md:w-8 bg-foreground/20"
+                    }`}
                   />
-                </div>
+                ))}
+              </div>
 
-                {/* Form Card */}
-                <div className="mt-6 rounded-3xl bg-white p-6 sm:p-8 md:p-10 shadow-[0_8px_40px_rgb(0,0,0,0.06)] border border-slate-100">
-                  <div className="mb-8 flex flex-wrap gap-2">
-                    <span className="flex items-center gap-1.5 rounded-full bg-slate-50 border border-slate-100 px-3 py-1.5 text-[10px] font-semibold text-slate-600">
-                      <CheckCircle2 size={12} className="text-emerald-500" /> NO CREDIT CARD REQUIRED
-                    </span>
-                    <span className="flex items-center gap-1.5 rounded-full bg-slate-50 border border-slate-100 px-3 py-1.5 text-[10px] font-semibold text-slate-600">
-                      <CheckCircle2 size={12} className="text-emerald-500" /> SETUP IN 3 MINS
-                    </span>
-                    <span className="hidden sm:flex items-center gap-1.5 rounded-full bg-slate-50 border border-slate-100 px-3 py-1.5 text-[10px] font-semibold text-slate-600">
-                      <CheckCircle2 size={12} className="text-emerald-500" /> USED BY 500+ AGENCIES
-                    </span>
-                  </div>
-
-                  {submitted ? (
-                    <motion.div 
-                      initial={{ opacity: 0, scale: 0.95 }}
-                      animate={{ opacity: 1, scale: 1 }}
-                      className="text-center py-10"
-                    >
-                      <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-emerald-100 mb-5">
-                        <CheckCircle2 size={32} className="text-emerald-600" strokeWidth={2.5} />
-                      </div>
-                      <h3 className="text-2xl font-bold tracking-tight text-slate-900">Brief Received</h3>
-                      <p className="mt-2 text-slate-500">
-                        We'll be in touch with <strong className="text-slate-900 font-semibold">{formState.email}</strong> shortly.
-                      </p>
-                      <button 
-                        onClick={() => setSubmitted(false)}
-                        className="mt-8 text-sm font-semibold text-blue-600 hover:text-blue-700"
-                      >
-                        ← Start another project
-                      </button>
-                    </motion.div>
-                  ) : (
-                    <form onSubmit={handleSubmit} className="space-y-6">
-                      <div>
-                        <label className={labelClass}>Agency / Company Name</label>
-                        <input 
-                          name="name" 
-                          value={formState.name} 
-                          onChange={handleChange} 
-                          placeholder="e.g. OruLabs" 
-                          className={inputClass} 
-                        />
-                      </div>
-
-                      <div>
-                        <label className={labelClass}>Work Email</label>
-                        <input 
-                          name="email" 
-                          type="email" 
-                          value={formState.email} 
-                          onChange={handleChange} 
-                          placeholder="you@company.com" 
-                          className={inputClass} 
-                        />
-                      </div>
-
-                      <div>
-                        <label className={labelClass}>Industry / Project Type</label>
-                        <div className="relative">
-                          <select 
-                            name="projectType" 
-                            value={formState.projectType} 
-                            onChange={handleChange} 
-                            className={`${inputClass} appearance-none cursor-pointer`}
-                          >
-                            {projectTypes.map((type) => (
-                              <option key={type} value={type}>{type}</option>
-                            ))}
-                          </select>
-                          <div className="pointer-events-none absolute inset-y-0 right-4 flex items-center">
-                            <svg className="h-4 w-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7"></path></svg>
-                          </div>
-                        </div>
-                      </div>
-
-                      <div>
-                        <label className={labelClass}>Estimated Budget</label>
-                        <div className="flex items-center gap-2 md:gap-3">
-                          {budgets.map((b) => (
-                            <button
-                              key={b}
-                              type="button"
-                              onClick={() => handleSelect("budget", b)}
-                              className={`flex-1 rounded-xl py-3 text-center text-sm font-semibold transition-all ${
-                                formState.budget === b
-                                  ? "bg-blue-50 border border-blue-200 text-blue-600 shadow-[0_2px_10px_rgba(59,130,246,0.1)]"
-                                  : "bg-slate-50 border border-transparent text-slate-500 hover:bg-slate-100"
-                              }`}
-                            >
-                              {b}
-                            </button>
-                          ))}
-                        </div>
-                      </div>
-
-                      {error && (
-                        <p className="text-sm font-semibold text-red-500">{error}</p>
-                      )}
-
-                      <div className="pt-2">
-                        <button 
-                          type="submit" 
-                          disabled={submitting}
-                          className="flex w-full items-center justify-center gap-2 rounded-xl bg-blue-600 py-3.5 text-sm font-bold text-white shadow-sm hover:bg-blue-700 transition-colors disabled:opacity-70"
-                        >
-                          {submitting ? "Processing..." : "Continue"}
-                          {!submitting && <ArrowRight size={16} />}
-                        </button>
-                      </div>
-                    </form>
-                  )}
-                </div>
-              </motion.div>
-            </div>
-
-            {/* Right Column - Live Preview */}
-            <div className="hidden lg:block relative w-full h-full min-h-[600px]">
-              <motion.div
-                initial={{ opacity: 0, x: 20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.6, delay: 0.2 }}
-                className="absolute top-10 left-0"
-              >
-                <div className="flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest text-slate-400 mb-3">
-                  <span className="h-1.5 w-1.5 rounded-full bg-emerald-400"></span> LIVE PREVIEW
-                </div>
-                <h2 className="text-3xl font-semibold tracking-tight text-white mix-blend-difference opacity-80 mb-8">
-                  This is your new command center
-                </h2>
-
-                {/* Dashboard Mockup */}
-                <div className="w-[110%] rounded-2xl bg-white p-2 shadow-[0_20px_60px_rgb(0,0,0,0.08)] border border-slate-100 flex overflow-hidden">
+              <AnimatePresence mode="wait">
+                <motion.div
+                  key={currentStep}
+                  initial={{ opacity: 0, y: 20, filter: "blur(4px)" }}
+                  animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+                  exit={{ opacity: 0, y: -20, filter: "blur(4px)" }}
+                  transition={{ duration: 0.4, ease: EASING }}
+                  className="w-full"
+                >
+                  <h2 className="text-2xl sm:text-3xl md:text-5xl lg:text-7xl font-black uppercase tracking-tighter text-foreground leading-[1.1] md:leading-[0.9]">
+                    {questions[currentStep].title}
+                  </h2>
                   
-                  {/* Sidebar */}
-                  <div className="w-16 flex-shrink-0 border-r border-slate-100 flex flex-col items-center py-6 gap-6 text-slate-400">
-                    <div className="flex gap-1 mb-4">
-                      <span className="h-2.5 w-2.5 rounded-full bg-red-400"></span>
-                      <span className="h-2.5 w-2.5 rounded-full bg-amber-400"></span>
-                      <span className="h-2.5 w-2.5 rounded-full bg-emerald-400"></span>
-                    </div>
-                    <div className="p-2 rounded-lg bg-blue-50 text-blue-600"><LayoutGrid size={18} /></div>
-                    <div className="p-2 hover:bg-slate-50 hover:text-slate-600 rounded-lg"><Users size={18} /></div>
-                    <div className="p-2 hover:bg-slate-50 hover:text-slate-600 rounded-lg"><Folder size={18} /></div>
-                    <div className="p-2 hover:bg-slate-50 hover:text-slate-600 rounded-lg"><BarChart3 size={18} /></div>
-                  </div>
+                  {renderCurrentInput()}
+                  
+                  {error && (
+                    <motion.p 
+                      initial={{ opacity: 0 }} 
+                      animate={{ opacity: 1 }} 
+                      className="mt-4 text-lg font-bold uppercase tracking-wide text-red-500 bg-red-500/10 inline-block px-4 py-2 border-l-4 border-red-500"
+                    >
+                      {error}
+                    </motion.p>
+                  )}
+                </motion.div>
+              </AnimatePresence>
 
-                  {/* Main Area */}
-                  <div className="flex-1 bg-white">
-                    {/* Topbar */}
-                    <div className="h-14 border-b border-slate-100 flex items-center justify-between px-6">
-                      <div className="flex items-center gap-2 text-slate-300 bg-slate-50 px-3 py-1.5 rounded-md text-xs w-64 border border-slate-100">
-                        <Search size={14} /> oru.app/macon-townsend
-                      </div>
-                      <div className="flex items-center gap-4 text-slate-400">
-                        <Bell size={16} />
-                        <div className="h-6 w-6 rounded bg-blue-100 text-blue-700 flex items-center justify-center text-[10px] font-bold">M</div>
-                      </div>
-                    </div>
-
-                    {/* Content */}
-                    <div className="p-8">
-                      <div className="flex items-center gap-3 mb-1">
-                        <h3 className="text-xl font-bold text-slate-900">{formState.name || "Macon Townsend"}</h3>
-                        <span className="px-2 py-0.5 rounded bg-emerald-50 text-emerald-600 text-[9px] font-bold tracking-wider border border-emerald-100">ERP</span>
-                      </div>
-                      <p className="text-xs text-slate-500 mb-8">Good morning. Here's your daily digest.</p>
-
-                      <div className="grid grid-cols-2 gap-4 mb-8">
-                        <div className="rounded-xl border border-slate-100 p-4 bg-white shadow-sm">
-                          <div className="flex justify-between items-start mb-6">
-                            <div className="p-1.5 rounded-md bg-emerald-50 text-emerald-600"><TrendingUp size={14} /></div>
-                            <span className="text-[10px] font-bold text-emerald-500">+12%</span>
-                          </div>
-                          <p className="text-[9px] font-bold uppercase tracking-wider text-slate-400 mb-1">PIPELINE</p>
-                          <p className="text-xl font-bold text-slate-900">₹1.2M</p>
-                        </div>
-                        <div className="rounded-xl border border-slate-100 p-4 bg-white shadow-sm">
-                          <div className="flex justify-between items-start mb-6">
-                            <div className="p-1.5 rounded-md bg-blue-50 text-blue-600"><Users size={14} /></div>
-                            <span className="text-[10px] font-bold text-blue-500">+3</span>
-                          </div>
-                          <p className="text-[9px] font-bold uppercase tracking-wider text-slate-400 mb-1">ACTIVE CLIENTS</p>
-                          <p className="text-xl font-bold text-slate-900">42</p>
-                        </div>
-                      </div>
-
-                      {/* Bar chart mock */}
-                      <div className="h-32 w-full rounded-xl border border-slate-100 bg-slate-50/50 p-4 flex items-end justify-between gap-2">
-                        {[40, 55, 30, 60, 45, 70, 85, 60, 95, 100].map((h, i) => (
-                          <motion.div 
-                            key={i}
-                            initial={{ height: 0 }}
-                            animate={{ height: `${h}%` }}
-                            transition={{ duration: 1, delay: 0.5 + i * 0.05 }}
-                            className="w-full bg-blue-100 rounded-t-sm"
-                          />
-                        ))}
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </motion.div>
+              {/* Navigation Back */}
+              {currentStep > 0 && (
+                <motion.button
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  onClick={() => setCurrentStep(prev => prev - 1)}
+                  className="mt-16 text-sm font-black uppercase tracking-widest text-muted-foreground hover:text-foreground transition-colors flex items-center gap-2"
+                >
+                  <span>←</span> GO BACK
+                </motion.button>
+              )}
             </div>
-            
-          </div>
+          )}
         </div>
       </main>
     </div>

@@ -12,6 +12,7 @@ const OpenSourceDetail = lazy(() => import("@/pages/OpenSourceDetail"));
 const Services = lazy(() => import("@/pages/Services"));
 const Resume = lazy(() => import("@/pages/Resume"));
 const Connect = lazy(() => import("@/pages/Connect"));
+const OutRedirect = lazy(() => import("@/pages/OutRedirect"));
 const NotFound = lazy(() => import("@/pages/NotFound"));
 
 const AnimatedRoutes = () => {
@@ -75,6 +76,14 @@ const AnimatedRoutes = () => {
               element={
                 <PageTransition variant="zoom">
                   <Connect />
+                </PageTransition>
+              }
+            />
+            <Route
+              path="/out"
+              element={
+                <PageTransition variant="zoom">
+                  <OutRedirect />
                 </PageTransition>
               }
             />

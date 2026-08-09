@@ -23,7 +23,7 @@ const ServiceCard = ({ service, index, size = "medium" }: ServiceCardProps) => {
         ease: [0.22, 1, 0.36, 1],
       }}
       className={`group relative overflow-hidden border-2 border-foreground bg-background shadow-[4px_4px_0px_0px_hsl(var(--foreground))] transition-all duration-200 hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-[6px_6px_0px_0px_hsl(var(--accent))] ${
-        size === "large" ? "col-span-2" : "col-span-1"
+        size === "large" ? "md:col-span-2" : "col-span-1"
       }`}
     >
       <div className="p-5 md:p-6">
@@ -46,41 +46,14 @@ const ServiceCard = ({ service, index, size = "medium" }: ServiceCardProps) => {
         </p>
 
         {/* Benefits preview */}
-        <div className="mt-4 space-y-1.5">
-          {service.benefits.slice(0, 2).map((benefit, i) => (
-            <div key={i} className="flex items-center gap-2 text-xs text-muted-foreground">
-              <div className="h-1.5 w-1.5 bg-accent" />
+        <div className="mt-4 space-y-2">
+          {service.benefits.map((benefit, i) => (
+            <div key={i} className="flex items-start gap-2 text-xs md:text-sm text-muted-foreground leading-snug">
+              <div className="mt-1.5 h-1.5 w-1.5 flex-shrink-0 bg-accent" />
               <span>{benefit}</span>
             </div>
           ))}
         </div>
-
-        {/* Technologies */}
-        <div className="mt-4 flex flex-wrap gap-1.5">
-          {service.technologies.slice(0, 3).map((tech, i) => (
-            <span
-              key={i}
-              className="border border-foreground bg-muted px-2 py-0.5 text-xs font-medium text-foreground"
-            >
-              {tech}
-            </span>
-          ))}
-          {service.technologies.length > 3 && (
-            <span className="border border-foreground bg-muted px-2 py-0.5 text-xs font-medium text-muted-foreground">
-              +{service.technologies.length - 3}
-            </span>
-          )}
-        </div>
-
-        {/* Price range */}
-        {service.priceRange && (
-          <div className="mt-4 border-t border-foreground/10 pt-3">
-            <span className="text-xs font-black uppercase tracking-wide text-muted-foreground">
-              Starts from{" "}
-            </span>
-            <span className="text-sm font-black text-foreground">{service.priceRange}</span>
-          </div>
-        )}
 
         {/* Hover CTA */}
         <motion.div

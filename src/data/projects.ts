@@ -84,40 +84,4 @@ export const projects: Project[] = [
     accentColor: "#10B981",
     link: "https://followersof14.online/"
   },
-  {
-    id: "developers-mindset",
-    title: "Devie Education",
-    impactLine: "Interactive Tech Learning",
-    image: "https://images.unsplash.com/photo-1587620962725-abab7fe55159?q=80&w=2070&auto=format&fit=crop",
-    problem: "Traditional tutorials lack the hands-on, project-based approach necessary for mastering modern frameworks like Next.js.",
-    whatWasDone: "Designed an interactive learning platform featuring curated projects, structured paths, and a community-driven blog.",
-    outcome: "Transformed the learning journey for thousands of developers by focusing on building real-world applications.",
-    technicalDetails: "Next.js, TypeScript, MongoDB, GSAP for educational animations.",
-    accentColor: "#106109ff",
-    link: "https://devie-edu.vercel.app/"
-  },
-  {
-    id: "web-tools-all",
-    title: "WebTools Hub",
-    impactLine: "Ultimate Developer Utility",
-    image: "https://images.unsplash.com/photo-1581291518633-83b4ebd1d83e?q=80&w=2070&auto=format&fit=crop",
-    problem: "Developers and creators waste time switching between separate tools for simple tasks like image compression or text enhancement.",
-    whatWasDone: "Aggregated essential utilities into a single high-performance productivity suite, featuring AI-powered text and image processing.",
-    outcome: "Streamlined the creative workflow by providing all-in-one access to critical web and developer tools.",
-    technicalDetails: "React, AI Integration, WebAssembly for local processing, Tailwind UI.",
-    accentColor: "#8b8124ff",
-    link: "https://out-psi-kohl.vercel.app/"
-  },
-  {
-    id: "eid-greeting-gen",
-    title: "Eidi Greeting Gen",
-    impactLine: "Interactive Joy & Tradition",
-    image: "/eidi.png",
-    problem: "Traditional Eid greetings lacked an interactive and engaging way to exchange 'Eidi' in the digital space.",
-    whatWasDone: "Engineered a fun, gamified platform for creating and sharing interactive Eidi cards with surprise collection features.",
-    outcome: "Modernized a centuries-old tradition, making digital Eid celebrations more engaging for the tech-savvy generation.",
-    technicalDetails: "Next.js, Framer Motion, Interactive Payment Integrations.",
-    accentColor: "#8B5CF6",
-    link: "https://eid-greeting-generator-n1d9.vercel.app/"
-  },
 ];

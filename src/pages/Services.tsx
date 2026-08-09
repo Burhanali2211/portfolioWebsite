@@ -153,13 +153,13 @@ const Services = () => {
               className="mb-4 text-center"
             >
               <div className="mb-4 inline-block border-2 border-foreground bg-accent px-3 py-1 text-xs font-black uppercase tracking-widest text-accent-foreground shadow-[3px_3px_0px_0px_hsl(var(--foreground))]">
-                Transparent Pricing
+                Tailored Solutions
               </div>
               <h2 className="text-2xl font-black uppercase tracking-tight text-foreground md:text-3xl">
-                Know Before You Ask
+                Let's Discuss Your Project
               </h2>
               <p className="mt-3 mx-auto max-w-xl text-muted-foreground text-sm">
-                Ranges reflect real project scope. Final quote after a 30-min discovery call — no surprises.
+                Every project is unique. Let's schedule a quick discovery call to understand your requirements and craft a tailored proposal.
               </p>
             </motion.div>
 
@@ -182,9 +182,15 @@ const Services = () => {
                   <p className="mb-4 flex-1 text-xs text-muted-foreground leading-relaxed">
                     {service.shortDescription}
                   </p>
-                  <div className="border-t-2 border-foreground pt-3">
-                    <p className="text-xs font-bold uppercase tracking-widest text-muted-foreground">Starting from</p>
-                    <p className="mt-0.5 text-lg font-black text-foreground">{service.priceRange}</p>
+                  <div className="mt-auto border-t-2 border-foreground pt-3">
+                    <a
+                      href={`https://wa.me/${personalInfo.whatsapp}?text=Hi%20Burhan,%20I%27d%20like%20to%20discuss%20a%20project%20involving%20${encodeURIComponent(service.title)}.`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-1 text-xs font-black uppercase tracking-widest text-foreground hover:text-accent transition-colors"
+                    >
+                      Discuss Project <ArrowRight size={14} />
+                    </a>
                   </div>
                 </motion.div>
               ))}

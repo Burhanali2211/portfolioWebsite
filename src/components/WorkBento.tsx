@@ -122,6 +122,9 @@ const VideoItem = ({ item }: { item: BentoItem }) => {
       loop
       playsInline
       preload="none"
+      onContextMenu={(e) => e.preventDefault()}
+      controlsList="nodownload nofullscreen noremoteplayback"
+      draggable={false}
       className={cn(
         "w-full h-full object-cover transition-transform duration-500 group-hover:scale-110",
         item.portrait ? "object-center" : "object-top"
@@ -153,6 +156,8 @@ const BentoCard = ({ item, index }: { item: BentoItem; index: number }) => {
             src={item.src}
             alt={item.alt}
             loading="lazy"
+            onContextMenu={(e) => e.preventDefault()}
+            draggable={false}
             className="w-full h-full object-cover object-top transition-transform duration-500 group-hover:scale-110"
           />
         )}

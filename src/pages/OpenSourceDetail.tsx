@@ -72,8 +72,8 @@ const OpenSourceDetail = () => {
                                         {tool.links.download && (
                                             <Button size="lg" className="rounded-md border-2 border-foreground bg-foreground text-background font-black uppercase text-sm h-14 px-8 shadow-[4px_4px_0px_0px_hsl(var(--accent))] hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-[6px_6px_0px_0px_hsl(var(--accent))] transition-all" asChild>
                                                 <a href={tool.links.download} target="_blank" rel="noopener noreferrer">
-                                                    <Download className="mr-2 h-5 w-5" />
-                                                    Download v{tool.version}
+                                                    <ExternalLink className="mr-2 h-5 w-5" />
+                                                    Visit Project
                                                 </a>
                                             </Button>
                                         )}

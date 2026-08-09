@@ -45,9 +45,9 @@ const Work = () => {
         {/* Projects Grid - 2 columns bento style with stagger */}
         <section className="px-6 py-16 md:py-24">
           <div className="mx-auto max-w-5xl">
-            <div className="grid gap-6 md:grid-cols-2 md:gap-8">
+            <div className="grid gap-4 sm:gap-6 md:grid-cols-2 md:gap-8">
               {projects.map((project, i) => (
-                <ProjectCard key={project.id} project={project} index={i} />
+                <ProjectCard key={project.id} project={project} index={i} compactOnMobile={true} />
               ))}
             </div>
           </div>

@@ -215,6 +215,8 @@ const HeroSection = () => {
                       whileDrag={{ scale: 1.05, filter: "grayscale(0%)" }}
                       drag
                       dragConstraints={{ left: 0, right: 0, top: 0, bottom: 0 }}
+                      onContextMenu={(e) => e.preventDefault()}
+                      draggable={false}
                       className="h-full w-full object-cover transition-transform duration-700 cursor-grab active:cursor-grabbing"
                       loading="eager"
                       decoding="async"

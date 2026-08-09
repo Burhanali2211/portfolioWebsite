@@ -121,7 +121,7 @@ const OpenSourceCard = ({ tool, index }: OpenSourceCardProps) => {
             to={`/tools/${tool.id}`}
             className="flex items-center justify-center gap-2 border-2 border-foreground bg-foreground px-3 py-2 text-xs font-bold uppercase tracking-wide text-background transition-all rounded-md hover:bg-accent hover:text-accent-foreground"
           >
-            Review & Install
+            View Details
           </Link>
 
           <a

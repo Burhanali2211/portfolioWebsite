@@ -67,13 +67,13 @@ const Index = () => {
               </div>
             </header>
 
-            {/* Bento Grid — mobile 2-col with alternating full-width rows */}
-            <div className="grid grid-cols-2 gap-3 md:grid-cols-2 lg:grid-cols-3 lg:gap-8">
+            {/* Bento Grid */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 lg:grid-cols-3 lg:gap-8">
               {gridProjects.map((project, i) => {
                 const isWide = i === 0 || i === 3;
                 return (
-                  <div key={project.id} className={cn("h-full", isWide ? "col-span-2 lg:col-span-1" : "col-span-1")}>
-                    <ProjectCard project={project} index={i} compactOnMobile={!isWide} />
+                  <div key={project.id} className={cn("h-full", isWide ? "sm:col-span-2 lg:col-span-1" : "col-span-1")}>
+                    <ProjectCard project={project} index={i} compactOnMobile={false} />
                   </div>
                 );
               })}
@@ -182,6 +182,8 @@ const ProjectMiniCard = ({ project }: { project: Project }) => {
           <img
             src={project.image}
             alt={project.title}
+            onContextMenu={(e) => e.preventDefault()}
+            draggable={false}
             className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-500"
             onError={(e) => { e.currentTarget.style.display = "none"; }}
           />

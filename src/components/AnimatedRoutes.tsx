@@ -14,6 +14,8 @@ const Resume = lazy(() => import("@/pages/Resume"));
 const Connect = lazy(() => import("@/pages/Connect"));
 const OutRedirect = lazy(() => import("@/pages/OutRedirect"));
 const NotFound = lazy(() => import("@/pages/NotFound"));
+const Blog = lazy(() => import("@/pages/Blog"));
+const BlogPost = lazy(() => import("@/pages/BlogPost"));
 
 const AnimatedRoutes = () => {
   const location = useLocation();
@@ -84,6 +86,22 @@ const AnimatedRoutes = () => {
               element={
                 <PageTransition variant="zoom">
                   <OutRedirect />
+                </PageTransition>
+              }
+            />
+            <Route
+              path="/blog"
+              element={
+                <PageTransition variant="fade">
+                  <Blog />
+                </PageTransition>
+              }
+            />
+            <Route
+              path="/blog/:slug"
+              element={
+                <PageTransition variant="slideUp">
+                  <BlogPost />
                 </PageTransition>
               }
             />

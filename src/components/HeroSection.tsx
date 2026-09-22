@@ -92,7 +92,7 @@ const HeroSection = () => {
               once={true}
               className="text-4xl font-black uppercase leading-[0.9] tracking-tighter text-foreground sm:text-5xl md:text-6xl lg:text-7xl"
             >
-              {"I Build\nSoftware\nThat Works."}
+              {"Crafting\nDigital\nExperiences."}
             </TextRevealMask>
 
             {/* Accent underline */}
@@ -109,7 +109,7 @@ const HeroSection = () => {
               animate="mount"
               className="mt-6 max-w-lg text-base text-muted-foreground md:text-lg"
             >
-              I turn business problems into fast, reliable software. Web apps, IoT systems, and everything in between — built clean, delivered on time.
+              Hi, I'm Burhan Ali, a software developer and IoT engineer based in Kashmir. I focus on learning and building end-to-end production systems—from embedded hardware to modern Next.js web applications. Let's solve real problems together.
             </TextReveal>
 
             {/* Trust strip */}
@@ -207,7 +207,7 @@ const HeroSection = () => {
                     className="h-full w-full"
                   >
                     <motion.img
-                      src="/hero.jpg"
+                      src="/public/best-software-developer-in-kashmir.webp"
                       alt={personalInfo.name}
                       style={{ filter: imageFilter, touchAction: "none" }}
                       whileHover={{ scale: 1.05, filter: "grayscale(0%)" }}

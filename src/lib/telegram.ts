@@ -13,6 +13,17 @@ export const TELEGRAM_CONFIG: TelegramConfig = {
     chatId: "7658385347",
 };
 
+function escapeHtml(unsafe: string): string {
+    if (!unsafe) return "";
+    return unsafe
+        .toString()
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+}
+
 export async function sendToTelegram(message: string, config: TelegramConfig = TELEGRAM_CONFIG) {
     const url = `https://api.telegram.org/bot${config.botToken}/sendMessage`;
 
@@ -123,11 +134,11 @@ export function formatContactMessageForTelegram(data: { name: string; email: str
     return `
 <b>📩 New Contact Message!</b>
 
-👤 <b>From:</b> ${data.name}
-📧 <b>Email:</b> ${data.email}
+👤 <b>From:</b> ${escapeHtml(data.name)}
+📧 <b>Email:</b> ${escapeHtml(data.email)}
 
 📝 <b>Message:</b>
-${data.message}
+${escapeHtml(data.message)}
 
 🕒 <b>Sent at:</b> ${new Date().toLocaleString()}
     `.trim();
@@ -145,16 +156,16 @@ export function formatProjectBriefForTelegram(data: {
     return `
 <b>🚀 New Project Brief!</b>
 
-👤 <b>Name:</b> ${data.name}
-📧 <b>Email:</b> ${data.email}
-${data.phone ? `📱 <b>Phone:</b> ${data.phone}` : ""}
+👤 <b>Name:</b> ${escapeHtml(data.name)}
+📧 <b>Email:</b> ${escapeHtml(data.email)}
+${data.phone ? `📱 <b>Phone:</b> ${escapeHtml(data.phone)}` : ""}
 
-🏷 <b>Project Type:</b> ${data.projectType}
-💰 <b>Budget:</b> ${data.budget}
-⏱ <b>Timeline:</b> ${data.timeline}
+🏷 <b>Project Type:</b> ${escapeHtml(data.projectType)}
+💰 <b>Budget:</b> ${escapeHtml(data.budget)}
+⏱ <b>Timeline:</b> ${escapeHtml(data.timeline)}
 
 📋 <b>Description:</b>
-${data.description}
+${escapeHtml(data.description)}
 
 🕒 <b>Sent at:</b> ${new Date().toLocaleString()}
     `.trim();

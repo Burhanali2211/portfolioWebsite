@@ -207,7 +207,7 @@ const HeroSection = () => {
                     className="h-full w-full"
                   >
                     <motion.img
-                      src="/public/best-software-developer-in-kashmir.webp"
+                      src="/best-software-developer-in-kashmir.webp"
                       alt={personalInfo.name}
                       style={{ filter: imageFilter, touchAction: "none" }}
                       whileHover={{ scale: 1.05, filter: "grayscale(0%)" }}

@@ -1,11 +1,12 @@
-export const personalInfo = {
+﻿export const personalInfo = {
   name: "Burhan Ali",
   role: "Software Developer & IoT Architect",
   tagline: "4 Years Building Products That Ship",
   location: "Srinagar, Jammu & Kashmir, India",
-  company: "Easyio.Tech",
+  aliases: ["itz ali", "itx ali", "its ali devie", "its burhan ali", "burhan ali 313", "burhanali2211"],
+  company: "Easyio Technologies",
   education: "BCA, Computer Applications",
-  email: "burhan@easyio.tech",
+  email: "burhanali0116@gmail.com",
   phone: "+91 9596418226",
   whatsapp: "919596418226",
 
@@ -13,7 +14,7 @@ export const personalInfo = {
     github: "https://github.com/Burhanali2211",
     instagram: "https://instagram.com/burhan_ali313",
     linkedin: "https://linkedin.com/in/burhanali",
-    portfolio: "https://easyio.tech",
+    portfolio: "https://itx-ali.netlify.app",
   },
 
   bio: `Government-certified Software Engineer (NSQF Level 4) with hands-on experience owning production systems end-to-end. As the sole engineer behind a live LMS platform, I handle full system reliability: server management, database administration, containerized deployment, and issue resolution. Comfortable picking up new tools quickly.`,

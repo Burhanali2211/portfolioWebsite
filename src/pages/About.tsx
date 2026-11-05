@@ -1,4 +1,4 @@
-import { motion, useScroll, useTransform } from "framer-motion";
+﻿import { motion, useScroll, useTransform } from "framer-motion";
 import { useRef } from "react";
 import { Link } from "react-router-dom";
 import { ArrowRight, MapPin, Briefcase, GraduationCap, Heart } from "lucide-react";
@@ -108,6 +108,7 @@ const About = () => {
                 <p className="mt-2 text-lg font-bold text-accent md:text-xl">
                   {personalInfo.role}
                 </p>
+                <p className="mt-1 text-xs text-muted-foreground font-mono">Also known as itz ali / burhanali2211 / burhan ali 313</p>
 
                 {/* Quick info */}
                 <div className="mt-6 space-y-3">

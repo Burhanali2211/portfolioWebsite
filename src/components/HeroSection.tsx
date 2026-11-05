@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+﻿import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, CheckCircle } from "lucide-react";
@@ -109,7 +109,7 @@ const HeroSection = () => {
               animate="mount"
               className="mt-6 max-w-lg text-base text-muted-foreground md:text-lg"
             >
-              Hi, I'm Burhan Ali, a software developer and IoT engineer based in Kashmir. I focus on learning and building end-to-end production systems—from embedded hardware to modern Next.js web applications. Let's solve real problems together.
+              Hi, I'm Burhan Ali (itz ali), a software developer and IoT engineer based in Kashmir. I focus on learning and building end-to-end production systems—from embedded hardware to modern Next.js web applications. Let's solve real problems together.
             </TextReveal>
 
             {/* Trust strip */}

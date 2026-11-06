@@ -21,7 +21,7 @@ const items: BentoItem[] = [
   {
     type: "video",
     src: "/mywork/students-questioning.mp4",
-    alt: "Engaging students with board questioning",
+    alt: "Burhan Ali conducting live classroom session and student mentoring at Easyio",
     label: "Live Classroom Session",
     sub: "Real-time board engagement — students driving the narrative",
     colSpan: "col-span-2",
@@ -32,7 +32,7 @@ const items: BentoItem[] = [
   {
     type: "video",
     src: "/mywork/mechatronics-iot.mp4",
-    alt: "Teaching mechatronics and IoT",
+    alt: "Burhan Ali teaching Mechatronics and IoT hardware systems",
     label: "Mechatronics & IoT Workshop",
     sub: "Hands-on college systems — hardware meets software",
     colSpan: "col-span-1",
@@ -43,7 +43,7 @@ const items: BentoItem[] = [
   {
     type: "image",
     src: "/mywork/certification.jpg",
-    alt: "Certification felicitation",
+    alt: "Burhan Ali receiving government software developer certification NSQF Level 4",
     label: "Certified & Recognised",
     sub: "Officially recognised across IoT, full-stack, systems",
     colSpan: "col-span-1 sm:col-span-1 lg:col-span-1",
@@ -52,7 +52,7 @@ const items: BentoItem[] = [
   {
     type: "image",
     src: "/mywork/project-official.jpg",
-    alt: "Project showcase to officials",
+    alt: "Burhan Ali presenting official software project demo to stakeholders",
     label: "Official Project Demo",
     sub: "Stakeholder demos — live builds in action",
     colSpan: "col-span-1 sm:col-span-1 lg:col-span-1",
@@ -61,7 +61,7 @@ const items: BentoItem[] = [
   {
     type: "image",
     src: "/mywork/students-around.jpg",
-    alt: "Students gathered around",
+    alt: "Burhan Ali collaborating with engineering students in Kashmir",
     label: "Collaborative Learning",
     sub: "Curiosity clustering — problems spark solutions",
     colSpan: "col-span-1 sm:col-span-1 lg:col-span-1",
@@ -70,7 +70,7 @@ const items: BentoItem[] = [
   {
     type: "image",
     src: "/mywork/programming-basics.jpg",
-    alt: "Teaching programming basics",
+    alt: "Burhan Ali teaching programming fundamentals and web development",
     label: "Programming Fundamentals",
     sub: "First principles — breaking code into building blocks",
     colSpan: "col-span-1 sm:col-span-1 lg:col-span-1",
@@ -79,7 +79,7 @@ const items: BentoItem[] = [
   {
     type: "image",
     src: "/mywork/workshop-selfie.jpg",
-    alt: "Workshop facilitation",
+    alt: "Burhan Ali facilitating technical workshop with engineering students",
     label: "Hands-on Workshops",
     sub: "Zero to deployed — end-to-end technical depth",
     colSpan: "col-span-1 sm:col-span-1 lg:col-span-1",
@@ -88,7 +88,7 @@ const items: BentoItem[] = [
   {
     type: "image",
     src: "/mywork/teaching raspberrypi.png",
-    alt: "Teaching Raspberry Pi",
+    alt: "Burhan Ali teaching embedded Linux and Raspberry Pi development",
     label: "Raspberry Pi Sessions",
     sub: "Bringing hardware to life with embedded Linux",
     colSpan: "col-span-1 sm:col-span-1 lg:col-span-1",

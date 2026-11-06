@@ -1,4 +1,4 @@
-﻿import { Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, CheckCircle } from "lucide-react";
@@ -109,7 +109,7 @@ const HeroSection = () => {
               animate="mount"
               className="mt-6 max-w-lg text-base text-muted-foreground md:text-lg"
             >
-              Hi, I'm Burhan Ali (itz ali), a software developer and IoT engineer based in Kashmir. I focus on learning and building end-to-end production systems—from embedded hardware to modern Next.js web applications. Let's solve real problems together.
+              Hi, I'm Burhan Ali, a full-stack software developer and IoT engineer based in Kashmir. I build production-ready web platforms, robust backend APIs, and connected smart hardware that help businesses automate workflows, scale reliably, and bring ambitious ideas to life.
             </TextReveal>
 
             {/* Trust strip */}
@@ -208,7 +208,10 @@ const HeroSection = () => {
                   >
                     <motion.img
                       src="/best-software-developer-in-kashmir.webp"
-                      alt={personalInfo.name}
+                      alt="Burhan Ali - Software Developer & IoT Architect at Easyio Technologies (Burhan Ali Easyio)"
+                      width={600}
+                      height={600}
+                      fetchPriority="high"
                       style={{ filter: imageFilter, touchAction: "none" }}
                       whileHover={{ scale: 1.05, filter: "grayscale(0%)" }}
                       whileTap={{ scale: 1.05, filter: "grayscale(0%)" }}

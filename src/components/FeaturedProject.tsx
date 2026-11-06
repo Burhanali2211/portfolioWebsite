@@ -96,7 +96,7 @@ const FeaturedProject = ({ project }: FeaturedProjectProps) => {
             <div className="relative aspect-[16/9] lg:aspect-auto lg:col-span-7 overflow-hidden bg-[var(--accent-color)] border-b border-foreground md:border-b-2 lg:border-b-0 rounded-t-2xl lg:rounded-l-2xl lg:rounded-tr-none group-hover:bg-muted transition-colors duration-500">
               <motion.img
                 src={project.image}
-                alt={project.title}
+                alt={`${project.title} - Project by Burhan Ali (Easyio Technologies)`}
                 loading="lazy"
                 decoding="async"
                 style={{ scale: imageScale }}

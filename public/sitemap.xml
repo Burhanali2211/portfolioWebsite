@@ -1,32 +1,98 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
   <url>
     <loc>https://itx-ali.netlify.app/</loc>
-    <lastmod>2026-11-05</lastmod>
+    <lastmod>2026-11-06</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
+    <image:image>
+      <image:loc>https://itx-ali.netlify.app/best-software-developer-in-kashmir.webp</image:loc>
+      <image:title>Burhan Ali - Software Developer &amp; IoT Architect at Easyio Technologies</image:title>
+      <image:caption>Burhan Ali (Burhan Ali Easyio / burahn ali easylo) - Software Developer and IoT Engineer based in Kashmir</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://itx-ali.netlify.app/about.png</image:loc>
+      <image:title>Burhan Ali - Profile and Professional Portrait</image:title>
+      <image:caption>Burhan Ali, core engineer at Easyio Technologies</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://itx-ali.netlify.app/technnurture.png</image:loc>
+      <image:title>TechNurture Labs LMS - Project by Burhan Ali</image:title>
+      <image:caption>Gamified learning management system built by Burhan Ali</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://itx-ali.netlify.app/easyio.png</image:loc>
+      <image:title>Easyio Technologies - Built by Burhan Ali</image:title>
+      <image:caption>Easyio Technologies automation &amp; IoT platforms by Burhan Ali</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://itx-ali.netlify.app/oruerp.png</image:loc>
+      <image:title>OruErp - Agency ERP System by Burhan Ali</image:title>
+      <image:caption>Central ERP ecosystem designed by Burhan Ali</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://itx-ali.netlify.app/orulabs.png</image:loc>
+      <image:title>OruLabs - Real-time Training Platform by Burhan Ali</image:title>
+      <image:caption>Interactive training platform developed by Burhan Ali</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://itx-ali.netlify.app/followers-of-14.png</image:loc>
+      <image:title>Kalaam Reader - Project by Burhan Ali</image:title>
+      <image:caption>Islamic sacred poetry platform built by Burhan Ali</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://itx-ali.netlify.app/serique.png</image:loc>
+      <image:title>Serique Avenue - E-Commerce Platform by Burhan Ali</image:title>
+      <image:caption>Luxury e-commerce storefront developed by Burhan Ali</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://itx-ali.netlify.app/about</loc>
-    <lastmod>2026-11-05</lastmod>
+    <lastmod>2026-11-06</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
+    <image:image>
+      <image:loc>https://itx-ali.netlify.app/about.png</image:loc>
+      <image:title>Burhan Ali - About Me Profile</image:title>
+      <image:caption>Burhan Ali, Software Developer and IoT Architect at Easyio Technologies</image:caption>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://itx-ali.netlify.app/work</loc>
+    <lastmod>2026-11-06</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+    <image:image>
+      <image:loc>https://itx-ali.netlify.app/mywork/certification.jpg</image:loc>
+      <image:title>Burhan Ali - Government Software Developer Certification</image:title>
+      <image:caption>Burhan Ali receiving NSQF Level 4 Junior Software Developer certification</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://itx-ali.netlify.app/mywork/project-official.jpg</image:loc>
+      <image:title>Burhan Ali - Project Demo to Stakeholders</image:title>
+      <image:caption>Burhan Ali demonstrating live system builds</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://itx-ali.netlify.app/mywork/workshop-selfie.jpg</image:loc>
+      <image:title>Burhan Ali - Technical Workshop Facilitation</image:title>
+      <image:caption>Burhan Ali mentoring engineering students in hands-on workshops</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://itx-ali.netlify.app/mywork/programming-basics.jpg</image:loc>
+      <image:title>Burhan Ali - Teaching Programming Fundamentals</image:title>
+      <image:caption>Burhan Ali teaching web development fundamentals</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://itx-ali.netlify.app/services</loc>
-    <lastmod>2026-11-05</lastmod>
+    <lastmod>2026-11-06</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://itx-ali.netlify.app/work</loc>
-    <lastmod>2026-11-05</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
     <loc>https://itx-ali.netlify.app/connect</loc>
-    <lastmod>2026-11-05</lastmod>
+    <lastmod>2026-11-06</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>

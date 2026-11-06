@@ -90,7 +90,7 @@ const ProjectCard = ({ project, index = 0, compactOnMobile = false }: ProjectCar
               {project.image && (
                 <img
                   src={project.image}
-                  alt={project.title}
+                  alt={`${project.title} - Built by Burhan Ali | Easyio Technologies`}
                   onContextMenu={(e) => e.preventDefault()}
                   draggable={false}
                   className="w-full h-full object-cover object-top transition-transform duration-500 group-hover:scale-105"

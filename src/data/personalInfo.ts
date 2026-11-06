@@ -1,9 +1,22 @@
-﻿export const personalInfo = {
+export const personalInfo = {
   name: "Burhan Ali",
   role: "Software Developer & IoT Architect",
   tagline: "4 Years Building Products That Ship",
   location: "Srinagar, Jammu & Kashmir, India",
-  aliases: ["itz ali", "itx ali", "its ali devie", "its burhan ali", "burhan ali 313", "burhanali2211"],
+  aliases: [
+    "Burhan Ali Easyio",
+    "burahn ali easylo",
+    "burhan ali easy io",
+    "Burhan Ali Easyio Technologies",
+    "burahn ali",
+    "burhanali",
+    "itz ali",
+    "itx ali",
+    "its ali devie",
+    "its burhan ali",
+    "burhan ali 313",
+    "burhanali2211"
+  ],
   company: "Easyio Technologies",
   education: "BCA, Computer Applications",
   email: "burhanali0116@gmail.com",
